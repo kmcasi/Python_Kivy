@@ -6,6 +6,7 @@
 > ![Preview TextInputCustom](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/TextInputCustom.png)
 > - [x] :recycle: Reduce line number updates
 > - [x] :heavy_check_mark: Fixing late scrolling event listener
+> - [x] :trackball: Fixing line number offset
 > - [x] :page_facing_up: Drag and drop files
 > - [ ] :triangular_ruler: Scroll bars with out loseing keyboard scrolling
 > - [ ] :part_alternation_mark: \(Optional) Using multithreading
