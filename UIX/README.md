@@ -10,6 +10,6 @@
 > - [x] :page_facing_up: Drag and drop files
 > - [x] :triangular_ruler: Dynamic line number width
 > - [ ] :bar_chart: Scroll bars with out loseing keyboard scrolling
-> - [ ] :part_alternation_mark: \(Optional) Using multithreading
+> - [ ] :part_alternation_mark: Using multithreading
 
 <!-- https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md -->
