@@ -15,11 +15,14 @@ The line numbers are bind on key up to use less processes like:
     CTRL+V, CTRL+X, CTRL+Z and CTRL+Y for now.
     
     In my kivy source code I changed redo from CTRL+R to CTRL+Y. In case you 
-    want to use R instead of V (or what ever is your redo bind) then go an look 
-    for '_on_key_up' event and you will find what line and replace the key code.
+    want to use R instead of Y (or what ever is your redo bind) then go an look 
+    for '_on_key_up' event and you will find the "CTRL + Y" elif statement and replace
+    the key code. I wrote another comment and there as a reminder.
+    Use your IDE/Editor and search for "CTRL + Y", will be much easier to find it.
+    (Usually Ctrl+F is a common short cut for that.)
 
 Line numbers width are changed dynamically if is need it so you can set 'width_line'
-to sero to get just the required width.
+to zero to get just the required width.
 
 .. TODO::
     []  Fix the cursor position reset when the font_name and/or font_size are changed
