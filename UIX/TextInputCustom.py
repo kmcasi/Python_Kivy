@@ -28,7 +28,7 @@ to zero to get just the required width.
     []  Fix the cursor position reset when the font_name and/or font_size are changed
         on run time.
     []  Adding multithreading to improve the speed of line numbers response. In this
-        stage, if we are pasting a lot of text, the app will frees until the line 
+        stage, if we are pasting a lot of text, the app will freez until the line 
         numbers are are updated. If you do not copy-paste huge text will be fine
         because the line numbers ar added and subtracted base on your keyboard key.
         Any way, will be much useful to add 4000+ in 1-2 sec maximum or faster.
