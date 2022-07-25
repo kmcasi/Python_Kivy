@@ -1,7 +1,7 @@
 # Preview
 
 <!-- TextInputCUstom -->
-> ### [:memo: TextInputCustom](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/TextInputCustom.py)
+> ### [:memo: TextInputCustom](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/TextInput)
 > Custom TextInput class with out KV file, only python.
 > ![Preview TextInputCustom](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/TextInputCustom.png)
 > - [x] :recycle: Reduce line number updates
