@@ -18,10 +18,14 @@ except ModuleNotFoundError as e:
     import sys
 
     file = str(e.name).rsplit(".", 1)[1] if "." in e.name else e.name
-    link:str = f"https://github.com/kmcasi/Python_Kivy/tree/main/UIX/TextInput/lib/helper/{file}.py"
-    message = f"If you downloaded the {file}.py helper from github then, " \
-              f"modify the path '{e.name}' to match your project structure.\n" \
-              f"Otherwise you can find it on: {link}"
+    link:str = f"https://github.com/kmcasi/Python_Kivy/tree/main/UIX/TextInput/lib/helper"
+    if e.name.startswith("lib.helper"):
+        message = "If you downloaded the helper files form github then, " \
+                  f"modify the path '{e.name}' to match your project structure.\n" \
+                  f"Otherwise you can find them on: {link}"
+    else: message = f"If you downloaded the {file}.py helper from github then, " \
+                    f"modify the path '{e.name}' to match your project structure.\n" \
+                    f"Otherwise you can find it on: {link}/{file}.py"
     raise ModuleNotFoundError(message).with_traceback(sys.exc_info()[2])
 
 """
