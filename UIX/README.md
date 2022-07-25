@@ -9,7 +9,11 @@
 > - [x] :trackball: Fixing line number offset
 > - [x] :page_facing_up: Drag and drop files
 > - [x] :triangular_ruler: Dynamic line number width
+> - [x] :rocket: Using multithreading
+> - [x] :computer_mouse: Shift + LeftClick selection
+> - [x] :part_alternation_mark: Sync line numbers to be more responsive on scroll and window resize events
 > - [ ] :bar_chart: Scroll bars with out loseing keyboard scrolling
-> - [ ] :part_alternation_mark: Using multithreading
+>
+> Multithreading is **50%** supported. Last three updates will be uploaded on ***25-26 July '22***.
 
 <!-- https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md -->
