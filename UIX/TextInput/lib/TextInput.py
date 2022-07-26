@@ -72,11 +72,12 @@ to zero to get just the required width.
 
 # // LOGIC
 class TextInputCustom(ModalView):
-    def __init__(self, width_line: int = 24, font_name: str = "comic", font_size: int = 18
-                 , color_line: ColorProperty = "#606366", color_text: ColorProperty = "#A9B7C6"
-                 , color_cursor: ColorProperty = "#606366", color_selection: ColorProperty = "#0066994D"
-                 , bg_line: ColorProperty = "#313335", bg_text: ColorProperty = "#2B2B2B"
-                 , padding_line: List = List(3, _len=2), padding_text: List = List(6, _len=2)
+    def __init__(self, width_line:int = 24, font_name:str = "comic", font_size:int = 18
+                 , color_line:ColorProperty = "#606366", color_text:ColorProperty = "#A9B7C6"
+                 , color_cursor:ColorProperty = "#606366", color_selection:ColorProperty = "#0066994D"
+                 , bg_line:ColorProperty = "#313335", bg_text:ColorProperty = "#2B2B2B"
+                 , padding_line:List = List(3, _len=2), padding_text:List = List(6, _len=2)
+                 , direction="left"
                  , **kwargs):
         """Custom TextInput class with line numbers.
 
@@ -100,19 +101,20 @@ class TextInputCustom(ModalView):
         self.font_size = font_size
         self.padding_line = padding_line
         self.padding_text = padding_text
+        self.direction = "rtl" if direction.lower() == "right" else "ltr"
 
         # Private variables
         self.__lines: int = 1
         self.__lines_width_min: int = 0
+        self.__cursor_index:int = 0
         self.__ctrl: bool = False
         self.__shift:bool = False
-        self.__cursor_index:int = 0
         self.__focused: bool = False
         self.__scroll_reset:bool = False
         self.__scroll_sync:bool = False
         self.__unredo: dict[str, bool] = {"undo": False, "redo": False}
-        self.__cursor: tuple[int, int] = (0, 0)
         self.__filename: list = []
+        self.__font_changed:dict = {"flag": False, "cursor": (0, 0), "scroll": [0, 0]}
 
         super(TextInputCustom, self).__init__(**kwargs)
 
@@ -121,13 +123,13 @@ class TextInputCustom(ModalView):
         self._Lines = TextInput(text="1", width=self.width_line, is_focusable=False, do_wrap=False, halign="right",
                                 background_color=self.bg_line, foreground_color=self.color_line,
                                 font_name=self.font_name, font_size=self.font_size, padding=self.padding_line)
-        self._Text = TextInput(auto_indent=True, do_wrap=False,
+        self._Text = TextInput(auto_indent=True, do_wrap=False, base_direction=self.direction,
                                selection_color=self.color_selection, cursor_color=self.color_cursor, cursor_width=2.5,
                                background_color=self.bg_text, foreground_color=self.color_text,
                                font_name=self.font_name, font_size=self.font_size, padding=self.padding_text)
 
         # Determinate the line numbers width dynamically
-        # if provided one is zero less.
+        # if provided one is zero or less.
         self._find_font_size()
         if self.width_line < 1: self._LineNumber_AutoWidth()
 
@@ -142,7 +144,6 @@ class TextInputCustom(ModalView):
 
         # Binds
         self._Text.bind(focus=self._check_is_focus)
-        # self._Text.bind(on_size=self._on_resize)
         Window.bind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
         Window.bind(on_drop_file=self._on_drop_file, on_drop_end=self._on_drop_end)
         Window.bind(on_resize=self._on_resize)
@@ -155,7 +156,8 @@ class TextInputCustom(ModalView):
         in fact you are calling **TextInput.bind** from inside this class."""
         self._Text.bind(**kwargs)
 
-    def _check_is_focus(self, instance, value): self.__focused = value
+    def _check_is_focus(self, instance, value):
+        self.__focused = value
 
     def _on_resize(self, window, width, height):
         Clock.schedule_once(self._LineNumber_UpdateScroll, .25)
@@ -175,7 +177,6 @@ class TextInputCustom(ModalView):
             if self.__shift and button == "left":
                 cursorIndex:tuple[int, int] = (self.__cursor_index, self._Text.cursor_index())
                 self._Text.select_text(min(cursorIndex), max(cursorIndex))
-
 
     def _on_key_down(self, window, keycode, _, text, modifiers) -> None:
         # Checking only if the text input is focused/clicked
@@ -397,13 +398,17 @@ class TextInputCustom(ModalView):
         # Update the line number width to mach the correct new size
         self._LineNumber_AutoWidth()
 
-    def _LineNumber_UpdateScroll(self, *noUse) -> None:
-        """**UpdateGraphics_LineNumber** purpose is to sync line numbers scroll_y
+    def _LineNumber_UpdateScroll(self, *noUse, sampleX:int|None=None, sampleY:int|None=None) -> None:
+        """**_LineNumber_UpdateScroll** purpose is to sync line numbers scroll_y
         value with the text one and to update the graphics for the line numbers.
 
         :param noUse:   Is unused, but is necessary for the tick events, like when
                         more values are provided then I need.
+        :param sampleX: The text scroll x value.
+        :param sampleY: The text scroll y value.
         """
+        if sampleX is not None: self._Text.scroll_x = sampleX
+        if sampleY is not None: self._Text.scroll_y = sampleY
         self._Lines.scroll_y = self._Text.scroll_y
         self._Lines._trigger_update_graphics()
 
@@ -429,6 +434,8 @@ class TextInputCustom(ModalView):
         self._LineNumber_UpdateScroll()
 
     def _DropFile_Open(self):
+        """.. NOTE ::
+            This is a proof of concept. Need some rework for more elegant way to approach this."""
         files_count: int = len(self.__filename)
 
         if files_count == 1:
@@ -484,6 +491,12 @@ class TextInputCustom(ModalView):
         """
         update: bool = False
 
+        if "direction" in kwargs:
+            self.direction = "rtl" if kwargs["direction"].lower() == "right" else "ltr"
+            self._Text.base_direction = self.direction
+            kwargs.pop("direction")
+            update = True
+
         if "width_line" in kwargs:
             self.width_line = kwargs["width_line"]
             self._Lines.width = self.width_line
@@ -532,6 +545,7 @@ class TextInputCustom(ModalView):
             self._Lines.font_name = self.font_name
             self._Text.font_name = self.font_name
             self._find_font_size()
+            self.__font_changed["flag"] = True
             kwargs.pop("font_name")
             update = True
 
@@ -540,6 +554,7 @@ class TextInputCustom(ModalView):
             self._Lines.font_size = self.font_size
             self._Text.font_size = self.font_size
             self._find_font_size()
+            self.__font_changed["flag"] = True
             kwargs.pop("font_size")
             update = True
 
@@ -564,13 +579,35 @@ class TextInputCustom(ModalView):
                     try:
                         exec(f"self.{uix}.{key} = {decorator}{value}{decorator}")
                         update = True
-                    except Exception:
-                        pass
+                    except Exception: pass
+
+        # If the text was unfocused and the font was changed
+        # then save the cursor and the scroll values
+        if not self.__focused and self.__font_changed["flag"]:
+            self.__font_changed["cursor"] = self._Text.cursor
+            self.__font_changed["scroll"] = [self._Text.scroll_x, self._Text.scroll_y]
 
         # Updating graphics just if is need it
         if update:
             self._Lines._trigger_update_graphics()
             self._Text._trigger_update_graphics()
+
+            # If the font was changed schedule an event to fix
+            # the cursor and the scroll changes
+            if self.__font_changed["flag"]:
+                Clock.schedule_once(self._fix_font_changes_jumps)
+                self.__font_changed["flag"] = False
+
+    def _fix_font_changes_jumps(self, *noUse) -> None:
+        """How the name is saying, the purpose of this is to fix the cursor and scroll changes
+        when the font is changeing on run time.
+
+        :param noUse:   Is unused, but is necessary for the tick events, like when
+                        more values are provided then I need."""
+        self._Text.cursor = self.__font_changed["cursor"]
+        self._LineNumber_UpdateScroll(sampleX=self.__font_changed["scroll"][0],
+                                      sampleY=self.__font_changed["scroll"][1])
+        self._Text.cancel_selection()
 
     @staticmethod
     def _MakeText(*values:object, sep:str|None=" ", end:str|None="\n") -> str:
