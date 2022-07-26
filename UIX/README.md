@@ -12,6 +12,7 @@
 > - [x] :rocket: Using multithreading
 > - [x] :computer_mouse: Shift + LeftClick selection
 > - [x] :part_alternation_mark: Sync line numbers to be more responsive on scroll and window resize events
+> - [x] :interrobang: Fixed cursor and scroll jumps on the bottom page when the font is changed on run time.
 > - [ ] :bar_chart: Scroll bars with out loseing keyboard scrolling
 
 <!-- https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md -->
