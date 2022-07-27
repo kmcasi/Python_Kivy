@@ -42,7 +42,7 @@ Line numbers width are changed dynamically if is need it so you can set 'width_l
 to zero to get just the required width.
 
 .. TODO::
-    [ ]  Fix the cursor position reset when the font_name and/or font_size are changed
+    [x]  Fix the cursor position reset when the font_name and/or font_size are changed
         on run time.
     [x]  Adding multithreading to improve the speed of line numbers response. In this
         stage, if we are pasting a lot of text, the app will freez until the line 
