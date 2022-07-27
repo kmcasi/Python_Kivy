@@ -1,6 +1,4 @@
 # // IMPORT
-from time import sleep, perf_counter
-
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.core.clipboard import Clipboard
@@ -44,7 +42,7 @@ Line numbers width are changed dynamically if is need it so you can set 'width_l
 to zero to get just the required width.
 
 .. TODO::
-    [x]  Fix the cursor position reset when the font_name and/or font_size are changed
+    [ ]  Fix the cursor position reset when the font_name and/or font_size are changed
         on run time.
     [x]  Adding multithreading to improve the speed of line numbers response. In this
         stage, if we are pasting a lot of text, the app will freez until the line 
@@ -144,33 +142,68 @@ class TextInputCustom(ModalView):
 
         # Binds
         self._Text.bind(focus=self._check_is_focus)
-        Window.bind(on_key_down=self._on_key_down, on_key_up=self._on_key_up)
-        Window.bind(on_drop_file=self._on_drop_file, on_drop_end=self._on_drop_end)
-        Window.bind(on_resize=self._on_resize)
-        Window.bind(on_mouse_up=self._on_mouse_up)
+        Window.bind(on_key_down=self._on_key_down, on_key_up=self._on_key_up,
+                    on_mouse_up=self._on_mouse_up,
+                    on_resize=self._on_resize,
+                    on_drop_file=self._on_drop_file, on_drop_end=self._on_drop_end)
 
-    def binding(self, **kwargs):
+    def binding(self, **kwargs) -> None:
         """Useful for controlling text binding.
 
         The key arguments are the same as **TextInput** ones because by calling this,
-        in fact you are calling **TextInput.bind** from inside this class."""
+        in fact you are calling **TextInput.bind** from inside this class.
+
+        :return: Nothing."""
         self._Text.bind(**kwargs)
 
-    def _check_is_focus(self, instance, value):
+    def _check_is_focus(self, instance:object, value:bool) -> None:
+        """Checking if the text area is focused/clicked.
+
+        :param instance:    Who trigger this event.
+        :param value:       If has focused.
+        :return:            Nothing."""
         self.__focused = value
 
-    def _on_resize(self, window, width, height):
-        Clock.schedule_once(self._LineNumber_UpdateScroll, .25)
+    def _on_resize(self, window:object, width:int, height:int) -> None:
+        """When window is resizing.
 
-    def _on_drop_file(self, window, filename, x, y):
+        :param window:  Who trigger this event.
+        :param width:   The new window width.
+        :param height:  The new window height.
+        :return:        Nothing."""
+        Clock.schedule_once(self._LineNumber_UpdateScroll, .5)
+
+    def _on_drop_file(self, window:object, filename:str, x:int, y:int) -> None:
+        """When a file was dropped.
+
+        :param window:      Who trigger this event.
+        :param filename:    The file
+        :param x:           The horizontal mouse position.
+        :param y:           The vertical mouse position.
+        :return:            Nothing."""
         # Checking only if the text input is focused/clicked
         if self.__focused: self.__filename.append(filename)
 
-    def _on_drop_end(self, window, x, y):
+    def _on_drop_end(self, window:object, x:int, y:int) -> None:
+        """After drop event is done.
+
+        :param window:  Who trigger this event.
+        :param x:       The horizontal mouse position.
+        :param y:       The vertical mouse position.
+        :return:        Nothing."""
         # Checking only if the text input is focused/clicked
         if self.__focused: self._DropFile_Open()
 
-    def _on_mouse_up(self, window, x, y, button, modifiers):
+    def _on_mouse_up(self, window:object, x:int, y:int, button:str, modifiers:list[str]) -> None:
+        """Checking if some mouse key was released and base on that
+        do some stuffs.
+
+        :param window:      Who trigger this event.
+        :param x:           The horizontal mouse position.
+        :param y:           The vertical mouse position.
+        :param button:      Triggered button.
+        :param modifiers:   Triggered special keys.
+        :return:            Nothing."""
         # Checking only if the text input is focused/clicked
         if self.__focused:
             # SHIFT + Left Click
@@ -178,9 +211,17 @@ class TextInputCustom(ModalView):
                 cursorIndex:tuple[int, int] = (self.__cursor_index, self._Text.cursor_index())
                 self._Text.select_text(min(cursorIndex), max(cursorIndex))
 
-    def _on_key_down(self, window, keycode, _, text, modifiers) -> None:
+    def _on_key_down(self, window:object, keycode:int, _:int, text:str, modifiers:list[str]) -> None:
+        """Checking if some keyboard key was pressed and base on that
+        do some stuffs.
+
+        :param window:      Who trigger this event.
+        :param keycode:     Triggered key code.
+        :param text:        ASCII version of the keycode.
+        :param modifiers:   Triggered special keys.
+        :param _:           I do not know...
+        :return:            Nothing."""
         # Checking only if the text input is focused/clicked
-        # print(keycode)
         if self.__focused:
             # Long press will trigger same logic multiple times
             # So we check if the flags was triggered already
@@ -202,8 +243,14 @@ class TextInputCustom(ModalView):
 
                 if not self.__unredo["undo"]: self.__unredo["undo"] = True
 
-    def _on_key_up(self, window, keycode, _) -> None:
-        # print(keycode)
+    def _on_key_up(self, window:object, keycode:int, _:int) -> None:
+        """Checking if some keyboard keys was released and base on that
+        do some stuffs.
+
+        :param window:  Who trigger this event.
+        :param keycode: Triggered key code.
+        :param _:       I do not know...
+        :return:        Nothing."""
         # Checking only if the text input is focused/clicked
         if self.__focused:
             # # [Arrow Up, Arrow Down, Page Up, Page Down]
@@ -215,7 +262,6 @@ class TextInputCustom(ModalView):
             # line behind. So we flag that scroll need to be sync.
             # [Enter, Numpad Enter]
             elif keycode in [13, 271]: self.__scroll_sync = True
-
 
             # [Backspace, Delete]
             if keycode in [8, 127]:
@@ -318,9 +364,6 @@ class TextInputCustom(ModalView):
                 except IndexError: pass
                 finally: self.__scroll_sync = True
 
-            # Because line numbers are calculated on key up, is a possibility
-            # to hold a key, and you can add/subtract more lines than one time.
-            # So here we will make sore the line numbers are match.
             # [L_CTRL, R_CTRL]
             elif keycode in [305, 306]: self.__ctrl = False
 
@@ -338,10 +381,11 @@ class TextInputCustom(ModalView):
                     self.__scroll_sync = False
                     self._LineNumber_UpdateScroll()
 
-    def _LineNumber_Unknown(self, substring:str|None=None):
+    def _LineNumber_Unknown(self, substring:str|None=None) -> None:
         """This is a helper to recalculate the line numbers.
 
-        :param substring:   The text to process as string."""
+        :param substring:   The text to process as string.
+        :return:            Nothing."""
         reference: int = len(self._Text.lines)
 
         # If the reference is bigger than the (line number different from zero)
@@ -367,11 +411,12 @@ class TextInputCustom(ModalView):
 
             self._LineNumber_AutoWidth()
 
-    def _LineNumber_Add(self, substring:str|None=None, amount:int=0):
-        """Add the line numbers
+    def _LineNumber_Add(self, substring:str|None=None, amount:int=0) -> None:
+        """Add the line numbers.
 
         :param substring:   The text to process as string.
-        :param amount:      The amount of addition."""
+        :param amount:      The amount of addition.
+        :return:            Nothing."""
         # Use multithreading to figure out the optimal way to handle
         # the lines amount and the text version of it
         try:
@@ -383,11 +428,12 @@ class TextInputCustom(ModalView):
         # Update the line number width to mach the correct new size
         self._LineNumber_AutoWidth()
 
-    def _LineNumber_Subtract(self, substring=None, amount:int=0):
-        """Subtract the line numbers
+    def _LineNumber_Subtract(self, substring=None, amount:int=0) -> None:
+        """Subtract the line numbers.
 
         :param substring:   The text to process as string.
-        :param amount:      The amount of subtraction."""
+        :param amount:      The amount of subtraction.
+        :return: Nothing."""
         try:
             t = ThreadLinesSubstract(self._Lines.text, substring, amount)
             self._Lines.text = t.text
@@ -406,36 +452,51 @@ class TextInputCustom(ModalView):
                         more values are provided then I need.
         :param sampleX: The text scroll x value.
         :param sampleY: The text scroll y value.
+        :return: Nothing.
         """
         if sampleX is not None: self._Text.scroll_x = sampleX
         if sampleY is not None: self._Text.scroll_y = sampleY
         self._Lines.scroll_y = self._Text.scroll_y
         self._Lines._trigger_update_graphics()
 
-    def on_touch_up(self, touch):
+    def on_touch_up(self, touch:object) -> None:
         """**Scrolling event**
 
-        Let you scroll the text but not the line numbers. They are synced with the text."""
+        Let you scroll the text but not the line numbers. They are synced with the text.
+
+        :param touch:   What type of event it is.
+        :return:        Nothing."""
         self._Text.on_touch_up(touch)
         self._LineNumber_UpdateScroll()
 
-    def on_touch_down(self, touch):
+    def on_touch_down(self, touch:object) -> None:
         """**Scrolling event**
 
-        Let you scroll the text but not the line numbers. They are synced with the text."""
+        Let you scroll the text but not the line numbers. They are synced with the text.
+
+        :param touch:   What type of event it is.
+        :return:        Nothing."""
         self._Text.on_touch_down(touch)
         self._LineNumber_UpdateScroll()
 
-    def on_touch_move(self, touch):
+    def on_touch_move(self, touch:object) -> None:
         """**Scrolling event**
 
-        Let you scroll the text but not the line numbers. They are synced with the text."""
+        Let you scroll the text but not the line numbers. They are synced with the text.
+
+        :param touch:   What type of event it is.
+        :return:        Nothing."""
         self._Text.on_touch_move(touch)
         self._LineNumber_UpdateScroll()
 
-    def _DropFile_Open(self):
-        """.. NOTE ::
-            This is a proof of concept. Need some rework for more elegant way to approach this."""
+    def _DropFile_Open(self) -> None:
+        """The purpose of this is to extract the dropped  file(s) content and to slip it
+        on the current cursor position.
+
+        .. NOTE ::
+            This is a proof of concept. Need some rework for more elegant way to approach this.
+
+        :return: Nothing."""
         files_count: int = len(self.__filename)
 
         if files_count == 1:
@@ -460,19 +521,24 @@ class TextInputCustom(ModalView):
             self.__filename.clear()
             self._LineNumber_Unknown()
 
-    def _LineNumber_AutoWidth(self):
+    def _LineNumber_AutoWidth(self) -> None:
         """Set the maximum line number with need it to show up.
 
-        If required more space will extrude, otherwise will use the provided width line."""
+        If required more space will extrude, otherwise will use the provided width line.
+
+        :return: Nothing."""
         pad = (self.padding_line[0], self.padding_line[2 if len(self.padding_line) > 3 else 1])
 
         required = pad[0] + self.__lines_width_min * len(str(self.__lines)) + pad[1]
         self._Lines.width = max(self.width_line, required)
 
-    def _find_font_size(self):
-        """Calculate the minimum width need it to display one character."""
-        sample = FontMeasure(self.font_name, self.font_size)
-        self.__lines_width_min = sample.get_width_of("7")
+    def _find_font_size(self, sample:str="7") -> None:
+        """Calculate the minimum width need it to display one character.
+
+        :param sample:  The sample as a string.
+        :return:        Nothing."""
+        font = FontMeasure(self.font_name, self.font_size)
+        self.__lines_width_min = font.get_width_of(sample)
 
     def Theme(self, **kwargs) -> None:
         """**Theme** let you change the style dynamically with some custom
@@ -481,13 +547,17 @@ class TextInputCustom(ModalView):
         [type: int]
             width_line, font_size
         [type: str]
-            font_name
+            font_name, direction
         [type: ColorProperty]
             color_line, color_text, color_cursor, color_selection, bg_line, bg_text
+        [type: List]
+            padding_line, padding_text
 
         .. Note::
             Other key arguments can be provided, but they will be applied for both
             (line numbers and text) if is possible.
+
+        :return: Nothing.
         """
         update: bool = False
 
@@ -603,7 +673,8 @@ class TextInputCustom(ModalView):
         when the font is changeing on run time.
 
         :param noUse:   Is unused, but is necessary for the tick events, like when
-                        more values are provided then I need."""
+                        more values are provided then I need.
+        :return:        Nothing."""
         self._Text.cursor = self.__font_changed["cursor"]
         self._LineNumber_UpdateScroll(sampleX=self.__font_changed["scroll"][0],
                                       sampleY=self.__font_changed["scroll"][1])
@@ -611,7 +682,12 @@ class TextInputCustom(ModalView):
 
     @staticmethod
     def _MakeText(*values:object, sep:str|None=" ", end:str|None="\n") -> str:
-        """Makeing text from provided values."""
+        """Making text from provided values.
+
+        :param values:  Arguments to be added as text.
+        :param sep:     String inserted between values.
+        :param end:     String appended after the last value.
+        :return:        String."""
         text:str = ""
         for value in values: text += f"{sep}{value}" if sep is not None else value
         if end is not None: text += end
@@ -620,7 +696,7 @@ class TextInputCustom(ModalView):
     def SetText(self, *values:object, sep:str|None=" ", end:str|None="\n") -> None:
         """**SetText** let you setting a new text by replacing the existing one.
 
-        :param values:  Argumens to be added as text.
+        :param values:  Arguments to be added as text.
         :param sep:     String inserted between values.
         :param end:     String appended after the last value.
         :return:        Nothing.
@@ -637,7 +713,7 @@ class TextInputCustom(ModalView):
     def AddText(self, *values:object, sep:str|None=" ", end:str|None="\n") -> None:
         """**AddText** let you adding text after the existing one.
 
-        :param values:  Argumens to be appended after the text.
+        :param values:  Arguments to be appended after the text.
         :param sep:     String inserted between values.
         :param end:     String appended after the last value.
         :return:        Nothing.
