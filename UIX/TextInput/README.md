@@ -16,6 +16,10 @@
 
 # Update preview
 > Coming soon... Estimated date in early Aug '22
+> 
+> **Reason:** Scroll bars need a new set of logics.
+> 
+> Basically, is like I need to do it again from scratch, because almost everything is broken.
 > ![Preview TextInputCustom Update](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/TextInputCustom_Coming.png)
 
 <!-- https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md -->
