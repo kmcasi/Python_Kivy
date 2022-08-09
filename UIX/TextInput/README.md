@@ -15,9 +15,14 @@
 **.. TODO::** Documentation on this page for easy use and to avoid the reverse engineering.
 
 # Update preview
-> Coming soon... Estimated date in early Aug '22
+> Coming soon... Estimated date in Aug 13th '22
 > 
 > **Reason:** Scroll bars need a new set of logics.
+>
+> :tv: Status:
+> :dna: Working on keyboard scrolling.
+> (:test_tube: Checking for bugs.)
+> <!-- - [ ] :test_tube: Working on documentation. -->
 > 
 > Basically, is like I need to do it again from scratch, because almost everything is broken.
 > ![Preview TextInputCustom Update](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/TextInputCustom_Coming.png)
