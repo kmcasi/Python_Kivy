@@ -17,7 +17,7 @@
 # Update preview
 > Coming soon... Estimated date in Aug 13th '22
 > 
-> **Reason:** Scroll bars need a new set of logics.
+> **Reason:** Scroll bars need a new set of logics. Because I work in 4 shifts, I have 2-4 hours/day and is taking more than I expected.
 >
 > :tv: Status:
 > :dna: Working on keyboard scrolling.
