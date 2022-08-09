@@ -7,7 +7,7 @@
 > 
 > :tv: Status:
 > :dna: Working on: *Scroll bars with out loseing keyboard scrolling.*
-> (:test_tube: Fixing bugs.)
+> (:test_tube: Fixing bugs)
 > <!-- - [ ] :test_tube: Working on documentation. -->
 
 # Preview
