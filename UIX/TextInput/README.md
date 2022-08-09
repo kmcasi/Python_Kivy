@@ -7,7 +7,7 @@
 > 
 > :tv: Status:
 > :dna: Working on keyboard scrolling.
-> (:test_tube: Checking for bugs.)
+> (:test_tube: Fixing bugs.)
 > <!-- - [ ] :test_tube: Working on documentation. -->
 
 # Preview
