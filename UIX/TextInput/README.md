@@ -1,3 +1,15 @@
+# :warning: NOTE
+> Because I work in 4 shifts, I have 2-4 hours/day and is taking more than I expected.
+> 
+> ** :no_entry: DO NOT CLONE IT RIGHT NOW!**
+> 
+> **Reason:** I do not update it right now. You will know if is update, by checking if this warning note was erased.
+> 
+> :tv: Status:
+> :dna: Working on keyboard scrolling.
+> (:test_tube: Checking for bugs.)
+> <!-- - [ ] :test_tube: Working on documentation. -->
+
 # Preview
 > ![Preview TextInputCustom](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/TextInputCustom.png)
 > - [x] :recycle: Reduce line number updates
@@ -17,12 +29,7 @@
 # Update preview
 > Coming soon... Estimated date in Aug 13th '22
 > 
-> **Reason:** Scroll bars need a new set of logics. Because I work in 4 shifts, I have 2-4 hours/day and is taking more than I expected.
->
-> :tv: Status:
-> :dna: Working on keyboard scrolling.
-> (:test_tube: Checking for bugs.)
-> <!-- - [ ] :test_tube: Working on documentation. -->
+> **Reason:** Scroll bars need a new set of logics.
 > 
 > Basically, is like I need to do it again from scratch, because almost everything is broken.
 > ![Preview TextInputCustom Update](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/TextInputCustom_Coming.png)
