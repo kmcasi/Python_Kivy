@@ -1,8 +1,8 @@
 # :warning: NOTE
 > Because I work in 4 shifts, I have 2-4 hours/day and is taking more than I expected.
 > 
-> ** :no_entry: DO NOT CLONE IT RIGHT NOW!**
-> 
+> **:no_entry: DO NOT CLONE IT RIGHT NOW!**
+>
 > **Reason:** I do not update it right now. You will know if is update, by checking if this warning note was erased.
 > 
 > :tv: Status:
