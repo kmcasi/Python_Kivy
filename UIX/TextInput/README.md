@@ -6,7 +6,7 @@
 > **Reason:** I do not update it right now. You will know if is update, by checking if this warning note was erased.
 > 
 > :tv: Status:
-> :dna: Working on keyboard scrolling.
+> :dna: Working on: *Scroll bars with out loseing keyboard scrolling.*
 > (:test_tube: Fixing bugs.)
 > <!-- - [ ] :test_tube: Working on documentation. -->
 
@@ -27,7 +27,7 @@
 **.. TODO::** Documentation on this page for easy use and to avoid the reverse engineering.
 
 # Update preview
-> Coming soon... Estimated date in Aug 13th '22
+> **Coming soon...** Estimated date in Aug 13th '22
 > 
 > **Reason:** Scroll bars need a new set of logics.
 > 
