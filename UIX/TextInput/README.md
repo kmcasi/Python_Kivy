@@ -19,6 +19,7 @@
 > - [ ] :computer_mouse: Ctrl + Arrows scroll
 
 # Documentation
-**.. TODO::** Documentation on this page for easy use and to avoid the reverse engineering.
+> **.. TODO::** Documentation on this page for easy use and to avoid the reverse engineering.
+> - (Aug 14th, 22)
 
 <!-- https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md -->
