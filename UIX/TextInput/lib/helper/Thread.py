@@ -1,6 +1,6 @@
 #// IMPORT
 from os import cpu_count
-from concurrent.futures import ThreadPoolExecutor as Executor
+from concurrent.futures import ThreadPoolExecutor as Threads
 
 
 #// LOGIC
@@ -21,7 +21,7 @@ class ThreadLinesAdd:
         :param substring:   The text to process as string.
         :param amount:      The amount of addition.
 
-        :raise ValueError:  If are no new lines and is no need to process forward."""
+        :raise ValueError:  If there are no new lines and is no need to process forward."""
         # Local Variables
         self.lines:int = 0
         self.text:str = ""
@@ -34,9 +34,9 @@ class ThreadLinesAdd:
 
         if self.__substring is not None:
             # Count the amount of new lines
-            with Executor() as executor:
+            with Threads() as executor:
                 executor.map(self._lines_count, self.__substring)
-                # Save the amount of available threads base on previous used threads amount
+                # Overwrite the amount of available threads base on previous used threads amount
                 self.__threads = len(executor._threads)
 
             self._check_if_is_necessary_to_go_forward()
@@ -56,7 +56,7 @@ class ThreadLinesAdd:
                 offsets:list[int] = [ti for ti in range(self.__threads)]
 
                 # Create the text version of the line numbers
-                with Executor() as executor:
+                with Threads() as executor:
                     results = executor.map(self._lines_text, offsets)
 
                     # Assemble all text version of line numbers in one piece
@@ -80,7 +80,7 @@ class ThreadLinesAdd:
             if self.__linesThread > 1:
                 offsets:list[int] = [ti for ti in range(self.__threads)]
 
-                with Executor() as executor:
+                with Threads() as executor:
                     results = executor.map(self._lines_text, offsets)
 
                     for result in results: self.text += result
@@ -155,9 +155,9 @@ class ThreadLinesSubstract:
 
         :param refLines:    The reference of existing line numbers text.
         :param substring:   The text to process as string.
-        :param amount:      The amount of addition.
+        :param amount:      The amount of substraction.
 
-        :raise ValueError:  If are no lines and is no need to process forward."""
+        :raise ValueError:  If there are no lines and is no need to process forward."""
         # Local Variables
         self.lines:int = 0
         self.text:str = ""
@@ -165,11 +165,10 @@ class ThreadLinesSubstract:
         # Protected Variables
         self.__refLines = refLines
         self.__substring = substring
-        self.__index:int = 0
 
         if self.__substring is not None:
             # Count the amount of new lines
-            with Executor() as executor:
+            with Threads() as executor:
                 executor.map(self._lines_count, self.__substring)
 
         # Otherwise, use just the provided amount
@@ -180,17 +179,14 @@ class ThreadLinesSubstract:
 
     def _lines_count(self, substring:str) -> None:
         """Count the amount of new lines."""
-        self.__index += 1
         if substring == "\n": self.lines += 1
 
     def _lines_text(self) -> None:
         """Sample the new text line numbers."""
-        if self.lines == 0: raise ValueError("There are no lines to subtract.")
+        if self.lines == 0: raise ValueError("There are no new lines to add.")
 
         sample:list = self.__refLines.rsplit("\n", self.lines)
         self.text = sample[0]
-        print(self.__refLines[:-self.__index])
-        # self.text = self.__refLines[:-self.__index]
 
 
 

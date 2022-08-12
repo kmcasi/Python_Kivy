@@ -6,9 +6,9 @@ def List(*values:any, _len:int=4, _type:type=int) -> list:
     """**List** purpose is to return a list of elements.
     You can provide and unpair values like from 3 values get out 4.
 
-    Main reaso was because kivy *VariableListProperty* had not worked for me for some reasons ``\(-_-)/``.
+    Main reaso was because kivy *VariableListProperty* had not worked for me for some reasons ``\(-_-)/``
 
-    Accepted values and the return type are: int, float, str, bool.
+    Accepted values and the return type are: int and float.
     See extreme example below:
 
     >>> List(3)                             # [3, 3, 3, 3]
@@ -35,7 +35,9 @@ def List(*values:any, _len:int=4, _type:type=int) -> list:
             try:
                 out.append(_type(value))
 
-                if len(out) == _len: keep = False
+                if len(out) == _len:
+                    keep = False
+                    break
             except Exception as e: raise Exception(e)
 
     return out
