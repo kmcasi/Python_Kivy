@@ -426,9 +426,10 @@ class Main(App):
         This is happen because the rendered texture of the text
         is to big on width and kivy can not handel it by default."""
 
-        files:str = """You can drag and drop some files also...
-        P.S.: Ignore the console warning when you drop some files.
-        I do not know why is triggered, but I used \"on_drop_file\" and is still is there."""
+        files:str = """You can NOT drag and drop any more (for now)...
+        Also check the documentation. In case you do not understand something.
+        
+        https://github.com/kmcasi/Python_Kivy/blob/main/UIX/TextInput/README.md#warning-note"""
 
         needs:str = """I found a small bug on the kivy text input it self and I send an pull request
         to fix that, but just in case if was not fixed yet then:
