@@ -17,7 +17,7 @@
 > | - | - | - |
 > | :heavy_check_mark: | ![shift](https://github.com/kmcasi/Python_Kivy/blob/main/doc/key_bind/shift.png)![left_click](https://github.com/kmcasi/Python_Kivy/blob/main/doc/key_bind/left-click.png) | Set selection range. |
 > | :heavy_check_mark: | ![shift](https://github.com/kmcasi/Python_Kivy/blob/main/doc/key_bind/shift.png)![scroll](https://github.com/kmcasi/Python_Kivy/blob/main/doc/key_bind/scroll.png) | Scroll horizontally. |
-> | :x: | ![ctrl](https://github.com/kmcasi/Python_Kivy/blob/main/doc/key_bind/alt.png)![arrows](https://github.com/kmcasi/Python_Kivy/blob/main/doc/key_bind/numpad.png) | Scrolling from keyboard. |
+> | :heavy_check_mark: | ![ctrl](https://github.com/kmcasi/Python_Kivy/blob/main/doc/key_bind/alt.png)![arrows](https://github.com/kmcasi/Python_Kivy/blob/main/doc/key_bind/numpad.png) | Scrolling from keyboard. |
 > 
 > | :hammer_and_wrench: | Other futures |
 > | - | - |
