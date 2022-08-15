@@ -1,11 +1,9 @@
 <!-- https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md -->
 # :warning: NOTE
 >
-> - Some variables and functions was rename it. This may broke your logic in case you build something base on this.
 > - Drag and drop files was removed, for now. On next update will be back under **TextEditor** class.
-> - Scrolling from keyboard arrows are just a proof of concept for now.
 
-<br /><br />
+<br />
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ PREV ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
 
