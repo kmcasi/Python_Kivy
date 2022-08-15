@@ -431,18 +431,22 @@ class Main(App):
         
         https://github.com/kmcasi/Python_Kivy/blob/main/UIX/TextInput/README.md#warning-note"""
 
-        needs:str = """I found a small bug on the kivy text input it self and I send an pull request
-        to fix that, but just in case if was not fixed yet then:
-            > Go to kivy -> uix -> textinput.py
-            > Search for line number 2610
-            > Change padding index from bottom to top
-            > FROM: max_y = self.top - self.padding[3]
-            > TO: max_y = self.top - self.padding[1]"""
+        needs:str = "I found a small bug on the kivy text input it self and I send an pull request\n" \
+                    "to fix that, but just in case if was not fixed yet then:" \
+                    "\n\t> Go to kivy -> uix -> textinput.py" \
+                    "\n\t> Search for line number 2610" \
+                    "\n\t> Change padding index from bottom to top" \
+                    "\n\t> FROM: max_y = self.top - self.padding[3]" \
+                    "\n\t> TO: max_y = self.top - self.padding[1]"
+
+        useful:str = "If you found it useful is not to much if I ask to vote my stackoverflow answer as useful?\n" \
+                     "This will increase my reputation on that platform. Thanks in advance.\n\n" \
+                     "https://stackoverflow.com/a/72918353/10234009"
 
         Clock.schedule_once(lambda _:(self.MyText.SetText(info, end="\n"*3),
                                       self.MyText.AddText(files, end="\n"*3),
                                       self.MyText.AddText(needs, end="\n"*4),
-                                      self.MyText.AddText("I hope was useful.")), 3)
+                                      self.MyText.AddText(useful)), 3)
 
     def _on_focus(self, instance:object, value:bool) -> None:
         if value:
