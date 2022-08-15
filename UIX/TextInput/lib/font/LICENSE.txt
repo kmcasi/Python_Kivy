@@ -14,7 +14,7 @@
 
 
 #//=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=\\#
-#//                                                8bitOperatorPlus8-Bold.ttf                                                   \\#
+#//                                                8bitOperatorPlus8-Bold.ttf\\#                                                \\#
 #//=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=○=\\#
 #// author:     Grandoplex Productions                                                                                          \\#
 #// license:    https://www.1001freefonts.com/view-file/14007/U0lMIE9wZW4gRm9udCBMaWNlbnNlLnR4dA==/sil-open-font-license.txt    \\#

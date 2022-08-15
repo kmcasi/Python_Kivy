@@ -11,8 +11,14 @@ from lib.helper.List import List
 
 
 #// LOGIC
-def clamp(value:int|float, _min:int|float, _max:int|float) -> int|float:
+def clamp(value:int|float, _min:int|float=0, _max:int|float=1) -> int|float:
     """Clamp value between provided min and max values.
+
+    **Example:**
+
+    >>> clamp(2, _min=3, _max=5)    # 3
+    >>> clamp(4, _min=3, _max=5)    # 4
+    >>> clamp(6, _min=3, _max=5)    # 5
 
     :param value:   Value to clamp.
     :param _min:    Minimum value.
@@ -21,7 +27,7 @@ def clamp(value:int|float, _min:int|float, _max:int|float) -> int|float:
     return max(_min, min(value, _max))
 
 
-def normalize(*values:int|float, actual:list|tuple, desired:list|tuple, digits:int=21) -> list[float]:
+def normalize(value:int|float, _min:int|float=0, _max:int|float=1, digits:int=21) -> float:
     """Normalize values.
 
     If values are bigger then *actual* limits, the return values can have negative values
@@ -29,10 +35,29 @@ def normalize(*values:int|float, actual:list|tuple, desired:list|tuple, digits:i
 
     **Example:**
 
-    >>> normalize(1, 2, 3, 4, 5, actual=(1, 5), desired=(0, 1))
+    >>> normalize(1, _min=0, _max=2)
+    >>> # 0.5
+
+    :param value:   Value to normalize.
+    :param _min:    Minimum expected value.
+    :param _max:    Maximum expected value.
+    :param digits:  Maximum fractional digits.
+    :return:        Normalized values."""
+    return round((value - _min) / (_max - _min), digits)
+
+
+def normalize_plus(*values:int|float, actual:list|tuple, desired:list|tuple=(0, 1), digits:int=21) -> list[float]:
+    """Normalize values in desired range.
+
+    If values are bigger then *actual* limits, the return values can have negative values
+    and/or bigger values then *desired* limits.
+
+    **Example:**
+
+    >>> normalize_plus(1, 2, 3, 4, 5, actual=(1, 5))
     >>> # [0.0, 0.25, 0.5, 0.75, 1.0]
     >>>
-    >>> normalize(1, 2, 3, 4, 5, actual=(3, 7), desired=(0, 2))
+    >>> normalize_plus(1, 2, 3, 4, 5, actual=(3, 7), desired=(0, 2))
     >>> # [-1.0, -0.5, 0.0, 0.5, 1.0]
 
     :param values:  Values to normalize.
@@ -47,7 +72,7 @@ def normalize(*values:int|float, actual:list|tuple, desired:list|tuple, digits:i
         , digits) for x in values]
 
 
-def normalize_self(*values:int|float, digits:int=3, offset:int|float=1) -> list[float]:
+def normalize_self(*values:int|float, offset:int|float=1, digits:int=21) -> list[float]:
     """Normalize values between them self.
 
     This will return a list of values between 0 and 1 multiplied by offset.

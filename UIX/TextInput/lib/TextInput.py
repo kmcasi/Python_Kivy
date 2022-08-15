@@ -1,15 +1,14 @@
 # // IMPORT
 import random
-from builtins import staticmethod
-from contextlib import contextmanager
+from builtins import staticmethod, property
 from logging import warning as WARNING
 from sys import _getframe as THIS
 from os import linesep as OS_LN_SEP
 
-from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.config import Config
 from kivy.properties import ColorProperty
+from kivy.utils import deprecated
 
 from kivy.core.clipboard import Clipboard
 from kivy.core.window import Window
@@ -54,16 +53,17 @@ Font_Default:str = Config.getdefault("kivy", "default_font", None).split("'", 2)
 
 # // LOGIC
 class TextInput_LN(BoxLayout):
-    def __init__(self, width_ln:int = 24, width_tab:int=4, RTL:bool = False, auto_indent:bool=True
+    def __init__(self, width_ln:int = 24, width_tab:int = 4, RTL:bool = False, auto_indent:bool = True
                  , font_name:str = Font_Default, font_size:int = 18
-                 , width_scroll:int|float = 11, margin_scroll:int|float = 0, width_cursor:int|float = 2
-                 , padding_ln:List = List(3), padding_txt:List = List(6), spacing:int=0
+                 , width_scroll:int|float = 11, width_cursor:int|float = 2
+                 , margin_scroll:int|float = 0, margin_scroll_cursor:list|tuple = List(31.5, _type=float)
+                 , padding_ln:list|tuple = List(3), padding_txt:list|tuple = List(6), spacing:int = 0
                  , align_ln:str = "right", align_txt:str = "left"
                  , color_ln:ColorProperty = "606366", color_txt:ColorProperty = "A9B7C6"
                  , color_cursor:ColorProperty = "806F9F", color_selection:ColorProperty = "0066994D"
                  , color_scroll:ColorProperty = "A6A6A680", color_scroll_inactive:ColorProperty = "A6A6A647"
                  , bg_ln:ColorProperty = "313335", bg_txt:ColorProperty = "2B2B2B"
-                 , color_info:ColorProperty="606366", bg_info:ColorProperty="343638"
+                 , color_info:ColorProperty = "606366", bg_info:ColorProperty = "343638"
                  , **kwargs):
         """Custom TextInput class with line numbers.
 
@@ -87,6 +87,7 @@ class TextInput_LN(BoxLayout):
         self.RTL:bool = RTL
         self.auto_indent:bool = auto_indent
         self.margin_scroll:int|float = margin_scroll
+        self.margin_scroll_cursor:list|tuple = margin_scroll_cursor
         self.padding_ln:list = padding_ln
         self.padding_txt:list = padding_txt
         self.spacing:int = spacing
@@ -120,11 +121,10 @@ class TextInput_LN(BoxLayout):
         self.__os_sep:dict[str, str] = {"\r\n":"CRLF", "\r":"CR", "\n":"LF"}
         self.__file_ln_break:str = self.__os_sep[OS_LN_SEP]
         self.__file_encoding:str = "UTF-8"
-        self.__visible_lines:int = 0
         self.__hidden_height:float = 0.0
         self.__hidden_width:float = 0.0
-        self.__scroll_amount_y:float = 1.0
-        self.__scroll_amount_x:float = 1.0
+        self.__normalized_line_height:float = 0.0
+        self.__normalized_line_height_view:float = 0.0
 
         # Do some stuffs before to initialize the UIX elements
         self._sync_padding()
@@ -251,7 +251,6 @@ class TextInput_LN(BoxLayout):
         :param instance:    Who trigger this event.
         :param size:        List of width and height values.
         :return:            Nothing."""
-        self.__visible_lines = int(self.__Scroll_Text.height / self._Text.line_height)
         self.__update_hidden_size()
 
     def __update_hidden_size(self) -> None:
@@ -370,40 +369,34 @@ class TextInput_LN(BoxLayout):
         """This function handle the auto scrolling logics base on the cursor position.
 
         :return: Nothing."""
-        # TODO: Find until where it need to scroll base on cursor
-        #       Right now is just a proof of concept.
-        offset_y:float = self.__hidden_height * self.__Scroll_Text.scroll_y
-        normal_y:float = normalize(self._Text.cursor_pos[1]
-                                   , actual=(offset_y + self._Text.line_height * 3,
-                                             offset_y + self.__Scroll_Text.height - self._Text.line_height * 2)
-                                   , desired=(0, 1), digits=2)[0]
-
         offset_x:float = self.__hidden_width * self.__Scroll_Text.scroll_x
+        offset_y:float = self.__hidden_height * self.__Scroll_Text.scroll_y
+
         normal_x:float = normalize(self._Text.cursor_pos[0]
-                                   , actual=(offset_x + 32,
-                                             offset_x + self.__Scroll_Text.width - 32)
-                                   , desired=(0, 1), digits=2)[0]
+                                   , offset_x + self.margin_scroll_cursor[0]
+                                   , offset_x + self.__Scroll_Text.width - self.margin_scroll_cursor[2])
+        normal_y:float = normalize(self._Text.cursor_pos[1]
+                                   , offset_y + self.margin_scroll_cursor[3]
+                                   , offset_y + self.__Scroll_Text.height - self.margin_scroll_cursor[1])
 
-        if normal_y < 0.0:
-            if self._Text.cursor_pos[1] == (self.padding_txt[3] + self._Text.line_height):
-                Animation(scroll_y=0, t="out_expo").start(self.__Scroll_Text)
-            else: self.__Scroll_Text.scroll_y = clamp(self.__Scroll_Text.scroll_y - self.__scroll_amount_y, 0, 1)
+        if normal_x < 0:
+            amount:float = (offset_x - self._Text.cursor_pos[0] + self.margin_scroll_cursor[0]) / self.__hidden_width
+            self.__Scroll_Text.scroll_x = clamp(self.__Scroll_Text.scroll_x - amount)
 
-        elif normal_y > 1.0:
-            if self._Text.cursor_pos[1] == (self._Text.height - self.padding_txt[1]):
-                Animation(scroll_y=1, t="out_expo").start(self.__Scroll_Text)
-            else: self.__Scroll_Text.scroll_y = clamp(self.__Scroll_Text.scroll_y + self.__scroll_amount_y, 0, 1)
+        elif normal_x > 1:
+            amount:float = (self._Text.cursor_pos[0] - offset_x - self.__Scroll_Text.width +
+                            self.width_cursor + self.margin_scroll_cursor[2]) / self.__hidden_width
+            self.__Scroll_Text.scroll_x = clamp(self.__Scroll_Text.scroll_x + amount)
 
-        if normal_x < 0.0:
-            if self._Text.cursor_pos[0] == self.padding_txt[0]:
-                Animation(scroll_x=0, d=.25, t="out_expo").start(self.__Scroll_Text)
-            else: self.__Scroll_Text.scroll_x = clamp(self.__Scroll_Text.scroll_x - self.__scroll_amount_x, 0, 1)
+        if normal_y < self.__normalized_line_height_view:
+            amount:float = (offset_y - self._Text.cursor_pos[1] + self._Text.line_height +
+                            self.margin_scroll_cursor[3]) / self.__hidden_height
+            self.__Scroll_Text.scroll_y = clamp(self.__Scroll_Text.scroll_y - amount)
 
-        elif normal_x > 1.0:
-            if normal_x > 1.03: Animation(scroll_x=1, d=.25, t="out_expo").start(self.__Scroll_Text)
-            else: self.__Scroll_Text.scroll_x = clamp(self.__Scroll_Text.scroll_x + self.__scroll_amount_x, 0, 1)
-
-        # print(self._Text.cursor_pos[0], normal_x, self.__scroll_amount_x, self.__hidden_width)
+        elif normal_y > 1:
+            amount:float = (self._Text.cursor_pos[1] - offset_y - self.__Scroll_Text.height +
+                            self.margin_scroll_cursor[1]) / self.__hidden_height
+            self.__Scroll_Text.scroll_y = clamp(self.__Scroll_Text.scroll_y + amount)
 
     def __construct_info(self, cursor:bool|None=False, ln_sep:bool|str=False, encoding:bool|str=False,
                          tabs:bool=False, source:bool|str=False) -> None:
@@ -498,22 +491,31 @@ class TextInput_LN(BoxLayout):
             # Long press will trigger same logic multiple times
             # So we check if the flags was triggered already
             # before doing same flag trigger multiple times
+            self._Text.readonly = "alt" in modifiers
             if not self.__ctrl and "ctrl" in modifiers: self.__ctrl = True
             if not self.__shift and "shift" in modifiers:
                 self.__shift = True
                 self.__cursor_index["old"] = self._Text.selection_from
                 self.__cursor_index["new"] = self._Text.cursor_index()
 
-            # [Arrow Up, Arrow Down]
-            # if self.__ctrl and keycode in [273, 274]:
-            # TODO: Vertical scrolling
+            # ALT + Numpad 8
+            if "alt" in modifiers and keycode == 264:
+                self.__Scroll_Text.scroll_y = clamp(self.__Scroll_Text.scroll_y + self.__normalized_line_height)
 
-            # [Arrow Right, Arrow Left]
-            # if self.__ctrl and keycode in [275, 276]:
-            # TODO: Horizontal scrolling
+            # ALT + Numpad 2
+            elif "alt" in modifiers and keycode == 258:
+                self.__Scroll_Text.scroll_y = clamp(self.__Scroll_Text.scroll_y - self.__normalized_line_height)
+
+            # ALT + Numpad 4
+            elif "alt" in modifiers and keycode == 260:
+                self.__Scroll_Text.scroll_x = clamp(self.__Scroll_Text.scroll_x - self.__normalized_line_height)
+
+            # ALT + Numpad 6
+            elif "alt" in modifiers and keycode == 262:
+                self.__Scroll_Text.scroll_x = clamp(self.__Scroll_Text.scroll_x + self.__normalized_line_height)
 
             # [Enter, Numpad Enter]
-            if keycode in [13, 271]: self._LineNumber_Add(amount=1)
+            elif keycode in [13, 271]: self._LineNumber_Add(amount=1)
 
             # CTRL + V
             elif self.__ctrl and keycode == 118:
@@ -655,8 +657,11 @@ class TextInput_LN(BoxLayout):
 
             self.__lines = reference
             self._auto_width_ln()
-            self.__scroll_amount_y = 1
             Clock.schedule_once(lambda _:self._auto_text_size())
+
+            # Recalculate the line number size (0-1)
+            self.__normalized_line_height = self._Text.line_height / self._Text.height
+            self.__normalized_line_height_view = self._Text.line_height / self.__Scroll_Text.height
 
     def _LineNumber_Add(self, substring:str|None=None, amount:int=0) -> None:
         """Add the line numbers.
@@ -669,9 +674,9 @@ class TextInput_LN(BoxLayout):
             self._LineNumber.text += t.text
             self.__lines += t.lines
 
-            # Recalculate the scroll amount
-            try: self.__scroll_amount_y = 1 / (self.__lines - self.__visible_lines)
-            except ZeroDivisionError: self.__scroll_amount_y = 1
+            # Recalculate the line number size (0-1)
+            self.__normalized_line_height = self._Text.line_height / self._Text.height
+            self.__normalized_line_height_view = self._Text.line_height / self.__Scroll_Text.height
         except ValueError: pass
 
         # Update the line number width to mach the correct new size
@@ -689,9 +694,9 @@ class TextInput_LN(BoxLayout):
             self._LineNumber.text = t.text
             self.__lines -= t.lines
 
-            # Recalculate the scroll amount
-            try: self.__scroll_amount_y = 1 / (self.__lines - self.__visible_lines)
-            except ZeroDivisionError: self.__scroll_amount_y = 1
+            # Recalculate the line number size (0-1)
+            self.__normalized_line_height = self._Text.line_height / self._Text.height
+            self.__normalized_line_height_view = self._Text.line_height / self.__Scroll_Text.height
         except ValueError: pass
 
         # Update the line number width to mach the correct new size
@@ -721,7 +726,7 @@ class TextInput_LN(BoxLayout):
 
         :return: Nothing."""
         # TODO: New logic to speed up the response time on bigger text
-        self.__width_txt_min = FontMeasure(self.font_name, self.font_size).get_width_of(self.GetText())
+        self.__width_txt_min = FontMeasure(self.font_name, self.font_size).get_width_of(self.text)
         self._update_text_size()
 
     def _update_text_size(self) -> None:
@@ -737,6 +742,10 @@ class TextInput_LN(BoxLayout):
         self._LineNumber.height = self._Text.height
         self.__update_hidden_size()
 
+        # Recalculate the line number size (0-1)
+        self.__normalized_line_height = self._Text.line_height / self._Text.height
+        self.__normalized_line_height_view = self._Text.line_height / self.__Scroll_Text.height
+
     def _find_width_ln_min(self) -> None:
         """Find the minimum width need it to display one line number character.
 
@@ -744,11 +753,8 @@ class TextInput_LN(BoxLayout):
         measure = FontMeasure(self.font_name, self.font_size)
 
         self.__width_ln_min = max(measure.get_width_of(str(number)) for number in range(10))
-        # Calculate the horizontal scroll amount here
-        # because this function will be called when font name/size is changing
-        self.__scroll_amount_x = 1 / measure.get_width_of("W")
 
-    def Theme(self, **kwargs) -> None:
+    def Theme(self, crash:bool=True, **kwargs) -> None:
         """Change the style dynamically with some custom
         key arguments like:
 
@@ -759,13 +765,14 @@ class TextInput_LN(BoxLayout):
             font_size, width_tab
 
         [ type: int | float ]
-            width_ln, width_cursor, width_scroll, margin_scroll, spacing
+            width_ln, width_cursor, width_scroll,
+            spacing, margin_scroll
 
         [ type: bool ]
             RTL, auto_indent
 
         [ type: list | tuple ]
-            padding_ln, padding_txt
+            padding_ln, padding_txt, margin_scroll_cursor
 
         [ type: ColorProperty | str | list | tuple ]
             color_ln, color_txt, color_info,
@@ -773,10 +780,17 @@ class TextInput_LN(BoxLayout):
             color_scroll, color_scroll_inactive,
             bg_ln, bg_txt, bg_info
 
+        .. Note::
+            Will log an error message and will crash the application in case
+            the argument type is not one of listed ones.
+            If you want to not crash it, then set `crash` value to False, but
+            will log a warning message instead.
+
+        :param crash:   Crashing the app.
         :return: Nothing.
         """
         NAME:str = "%s.%s" % (self.__class__.__name__, THIS().f_code.co_name)
-        CHECKING = Check(NAME)
+        CHECKING = Check(NAME, close=crash)
 
         updated_padding:bool = False
         updated_font:bool = False
@@ -809,6 +823,11 @@ class TextInput_LN(BoxLayout):
                     self.width_cursor = float(arg)
                     self.__Scroll_Text.bar_margin = self.width_cursor
 
+            elif key == "margin_scroll_cursor":
+                with CHECKING.arg_type(key, arg, list, tuple, ignored=[bool]):
+                    if len(arg) != 4: arg = List(*arg, _len=4, _type=float)
+                    self.margin_scroll_cursor = arg
+
             elif key == "font_name":
                 with CHECKING.arg_type(key, arg, str):
                     self._LineNumber.font_name = self._Text.font_name = self.font_name = arg
@@ -831,13 +850,13 @@ class TextInput_LN(BoxLayout):
 
             elif key == "padding_ln":
                 with CHECKING.arg_type(key, arg, list, tuple):
-                    if len(arg) != 4: arg = List(*arg, _len=4)
+                    if len(arg) != 4: arg = List(*arg, _len=4, _type=float)
                     self.padding_ln = arg
                     updated_padding = True
 
             elif key == "padding_txt":
                 with CHECKING.arg_type(key, arg, list, tuple):
-                    if len(arg) != 4: arg = List(*arg, _len=4)
+                    if len(arg) != 4: arg = List(*arg, _len=4, _type=float)
                     self.padding_txt = arg
                     updated_padding = True
 
@@ -944,6 +963,41 @@ class TextInput_LN(BoxLayout):
                 self.color_info = Make.Color(self.color_ln, .25)
                 self.__Info.disabled_foreground_color = self.color_info
 
+    @deprecated(msg="Use 'text' instead with out round brackets. "
+                "Function 'TextInput_LN.GetText()' will be removed on the next two updates.")
+    def GetText(self) -> str: return self.text
+
+    @property
+    def text(self) -> str:
+        """Provide you the created text.
+
+        :return:    The text variable of type string (from kivy AliasProperty)."""
+        return self._Text.text
+
+    @text.setter
+    def text(self, value:any) -> None:
+        """Let you setting a new text value.
+
+        >>> self.MyText = TextInput_LN()
+        >>> self.MyText.text = True
+        >>> self.MyText.text += " text here..."
+        >>> # True text here...
+
+        :param value:   The new text.
+        :return:        Nothing."""
+        self._Text.text = str(value)
+        self._LineNumber_Unknown()
+
+    @text.deleter
+    def text(self) -> None:
+        """Let you deleting the text on unusual way.
+
+        >>> self.MyText = TextInput_LN()
+        >>> del self.MyText.text
+
+        :return: Nothing."""
+        self.Clear()
+
     def SetText(self, *values:any, sep:str|None=" ", end:str|None="\n") -> None:
         """**SetText** let you setting a new text by replacing the existing one.
 
@@ -997,26 +1051,48 @@ class TextInput_LN(BoxLayout):
         self._Text.insert_text(text)
         self._LineNumber_Add(text)
 
-    def GetText(self) -> str:
-        """**GetText** provide you the text.
+    def Clear(self, _from:int=0, _to:int=-1) -> None:
+        """Deleting text in the specified range.
 
-        :return:    The text variable of type string (from kivy AliasProperty)."""
-        return self._Text.text
+        :param _from:   Clear from.
+        :param _to:     Clear to.
+        :return:        Nothing.
+        :raise WARNING: If indexes are the same."""
+        # Revert indexes to maintain the order from min to max
+        if _from > _to > 0 or _from < _to > 0: _from, _to = _to, _from
 
-    def Clear(self) -> None:
-        """**Clear** the entire text and also the line numbers, off course.
+        # If indexes are the same log and warning.
+        elif _from == _to:
+            NAME:str = "%s.%s" % (self.__class__.__name__, THIS().f_code.co_name)
+            index:int = (len(self.text) - _from) if _from < 0 else _from
+            WARNING(f"{NAME}: ('_')☞ Are not any hidden characters on index {index}.")
 
-        :return: Nothing."""
-        self._Text.text, self._LineNumber.text = "", "1"
-        self.__lines = self.__scroll_amount_y = 1
-        self._auto_width_ln()
-        self._Text.size = self.__Scroll_Text.size
+        else:
+            fStart:bool = _from == 0
+            fEnd:bool = _to == -1 or _to == len(self._Text.text)
+
+            # If clearing from the start to the end
+            if fStart and fEnd:
+                self._Text.text, self._LineNumber.text, self.__lines = "", "1", 1
+                self._auto_width_ln()
+                self._Text.size = self.__Scroll_Text.size
+
+                # Recalculate the line number size (0-1)
+                self.__normalized_line_height = self._Text.line_height / self._Text.height
+                self.__normalized_line_height_view = self._Text.line_height / self.__Scroll_Text.height
+
+            # Otherwise, clear the specified range
+            else:
+                txtStart:str = "" if fStart else self._Text.text[:_from]
+                txtEnd:str = "" if fEnd else self._Text.text[_to:]
+                self._Text.text = txtStart + txtEnd
+                self._LineNumber_Unknown()
 
     def binding(self, **kwargs) -> None:
         """Useful for controlling text binding.
 
-        The key arguments are the same as **TextInput** ones because by calling this,
-        in fact you are calling **TextInput.bind** from inside this class.
+        The key arguments are the same as :class:`kivy.uix.textinput.TextInput` class ones because by calling this,
+        in fact you are calling **:meth:`kivy.uix.textinput.TextInput.bind`** from inside this class.
 
         :return: Nothing."""
         self._Text.bind(**kwargs)

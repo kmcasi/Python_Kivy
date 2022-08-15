@@ -12,7 +12,8 @@ from kivy.uix.label import Label
 from kivy.uix.spinner import Spinner, SpinnerOption
 
 from lib.TextInput import TextInput_LN as Text_LN
-from lib.TextInput import Font_Default
+# from lib.TextEditor import TextEditor as Text_LN
+from lib.TextEditor import Font_Default
 
 
 #// Global Variables
@@ -397,7 +398,7 @@ class Main(App):
         self.title = AppTitle
 
         # Local variables
-        self.Sampled: bool = False
+        self.Sampled: bool = True
 
         super(Main, self).__init__(**kwargs)
         # Remove touch simulation
@@ -444,15 +445,11 @@ class Main(App):
 
     def _on_focus(self, instance:object, value:bool) -> None:
         if value:
-            # self.MyText.Theme(padding_txt=[6, 6, 23, 110])
 
             if not self.Sampled:
                 with open(__file__, mode="r", encoding="UTF-8") as file:
                     self.MyText.SetText(file.read())
                     self.Sampled = True
-
-                # Debug non-custom values
-                # self.MyText.Theme(halign="right", cursor_width=10, cursor_color=[1,0,0,1])
 
         # else:
         #     self.MyText.Theme(width_ln=True)
