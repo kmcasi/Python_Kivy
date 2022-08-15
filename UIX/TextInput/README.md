@@ -80,11 +80,11 @@ If you want to see a specific subject, click on one of listed ones.
 > | align_ln | `str` | "right" | Horizontal alignment of the line number. |
 > | align_txt | `str` | "left" | Horizontal alignment of the text. |
 > | auto_indent | `bool` | **True** | Automatically indent multiline text. |
-> | bg_info | `str` <br /> `list` <br /> `tuple` | `#343638` | Background color, in RGBA format. <br /> If not provided, will update base on `bg_ln`with a slightly  difference of 5%. |
+> | bg_info | `str` <br /> `list` <br /> `tuple` | `#343638` | Background color, in RGBA format. |
 > | bg_ln | `str` <br /> `list` <br /> `tuple` | `#313335` | Background color, in RGBA format. |
 > | bg_txt | `str` <br /> `list` <br /> `tuple` | `#2B2B2B` | Background color, in RGBA format. |
 > | color_cursor | `str` <br /> `list` <br /> `tuple` | `#806F9F` | Foreground color, in RGBA format. |
-> | color_info | `str` <br /> `list` <br /> `tuple` | `#606366` | Foreground color, in RGBA format. <br /> If not provided, will update base on `color_ln` with a slightly  difference of 10%. |
+> | color_info | `str` <br /> `list` <br /> `tuple` | `#606366` | Foreground color, in RGBA format. |
 > | color_ln | `str` <br /> `list` <br /> `tuple` | `#606366` | Foreground color, in RGBA format. |
 > | color_scroll | `str` <br /> `list` <br /> `tuple` | `#A6A6A680` | Foreground color, in RGBA format. |
 > | color_scroll_inactive | `str` <br /> `list` <br /> `tuple` | `#A6A6A647` | Foreground color, in RGBA format. |
@@ -128,6 +128,13 @@ If you want to see a specific subject, click on one of listed ones.
 > | - | - | - | - |
 > | crash | `bool` | **True** | Will log an error[^error] message and will crash the application in case the `kwargs` types is not one of listed ones. <br /> If `False` will log a warning[^warning] message instead. |
 > | kwargs |  |  | The key arguments are the same as [*`:class:`**`TextInput.TextInput_LN`***](#label-custom-textinput-class-with-line-numbers). |
+> 
+> Some arguments are changed automatically.
+> | Argument | Info |
+> | - | - |
+> | color_info | If not provided, will update base on `color_ln` with a slightly  difference of 10%. |
+> | bg_info | If not provided, will update base on `bg_ln` with a slightly  difference of 5%. |
+> | padding_ln <br /> padding_txt | Will auto sync vertically to avoid line number offset. <br /> What I mean is that the `padding_top` and `padding_bottom` will be changed with biggest value of this two. |
 > - :information_source: The `crash` value will ***not*** prevent the *`:api:`**`kivy`*** to crash if the argument type is a wrong one.
 >   - This option is to prevent hard times on debug when you get an crash with a wrong value.
 > - :warning: Will log a warning[^warning] message in case a specified argument is not defined.
