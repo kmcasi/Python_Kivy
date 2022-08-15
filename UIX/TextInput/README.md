@@ -23,7 +23,7 @@
 > | - | - |
 > | :x: | Drag and drop files. Was removed, but will be on *`:class:`**`TextEditor.TextEditor`*** which will be available on short time, after I fixe some buggs on this *`:class:`**`TextInput.TextInput_LN`***. |
 > | :heavy_check_mark: | Dynamic line number width. |
-> | :part_alternation_mark: | Scroll bars with out loseing keyboard scrolling. |
+> | :heavy_check_mark: | Scroll bars with out loseing keyboard scrolling. |
 > | :part_alternation_mark: | Multithreading. |
 > | :recycle: | Reduce line number updates. |
 > | :recycle: | Cursor and scroll jumps when the font is changed on run time. |
