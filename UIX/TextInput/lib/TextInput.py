@@ -964,11 +964,11 @@ class TextInput_LN(BoxLayout):
         # If line number background was changed but not and the info colors
         if info["update"]:
             if not info["bg"]:
-                self.bg_info = Make.Color(self.bg_ln)
+                self.bg_info = Make.Color(self.bg_ln, 0.05)
                 self.__Info.background_color = self.bg_info
 
             if not info["color"]:
-                self.color_info = Make.Color(self.color_ln, .25)
+                self.color_info = Make.Color(self.color_ln, 0.1)
                 self.__Info.disabled_foreground_color = self.color_info
 
     @deprecated(msg="Use 'text' instead with out round brackets. "
