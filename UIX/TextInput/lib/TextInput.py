@@ -380,22 +380,30 @@ class TextInput_LN(BoxLayout):
                                    , offset_y + self.__Scroll_Text.height - self.margin_scroll_cursor[1])
 
         if normal_x < 0:
-            amount:float = (offset_x - self._Text.cursor_pos[0] + self.margin_scroll_cursor[0]) / self.__hidden_width
+            amount:float = (offset_x - self._Text.cursor_pos[0] + self.margin_scroll_cursor[0])
+            try: amount /= self.__hidden_width
+            except ZeroDivisionError: pass
             self.__Scroll_Text.scroll_x = clamp(self.__Scroll_Text.scroll_x - amount)
 
         elif normal_x > 1:
             amount:float = (self._Text.cursor_pos[0] - offset_x - self.__Scroll_Text.width +
-                            self.width_cursor + self.margin_scroll_cursor[2]) / self.__hidden_width
+                            self.width_cursor + self.margin_scroll_cursor[2])
+            try: amount /= self.__hidden_width
+            except ZeroDivisionError: pass
             self.__Scroll_Text.scroll_x = clamp(self.__Scroll_Text.scroll_x + amount)
 
         if normal_y < self.__normalized_line_height_view:
             amount:float = (offset_y - self._Text.cursor_pos[1] + self._Text.line_height +
-                            self.margin_scroll_cursor[3]) / self.__hidden_height
+                            self.margin_scroll_cursor[3])
+            try: amount /= self.__hidden_height
+            except ZeroDivisionError: pass
             self.__Scroll_Text.scroll_y = clamp(self.__Scroll_Text.scroll_y - amount)
 
         elif normal_y > 1:
             amount:float = (self._Text.cursor_pos[1] - offset_y - self.__Scroll_Text.height +
-                            self.margin_scroll_cursor[1]) / self.__hidden_height
+                            self.margin_scroll_cursor[1])
+            try: amount /= self.__hidden_height
+            except ZeroDivisionError: pass
             self.__Scroll_Text.scroll_y = clamp(self.__Scroll_Text.scroll_y + amount)
 
     def __construct_info(self, cursor:bool|None=False, ln_sep:bool|str=False, encoding:bool|str=False,
