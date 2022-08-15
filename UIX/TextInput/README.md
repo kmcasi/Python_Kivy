@@ -1,7 +1,7 @@
 <!-- https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md -->
 # :warning: NOTE
 >
-> - Drag and drop files was removed, for now. On next update will be back under **TextEditor** class.
+> - Drag and drop files was removed, for now. Will be back under **TextEditor** class.
 
 <br />
 
