@@ -12,7 +12,7 @@
 > 
 > ![Preview TextInputCustom](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/TextInputCustom.png)
 > 
-> Extra control functions than what allready *`:class:¬`**`kivy.uix.textinput.TextInput`*** have.
+> Extra control functions than what allready *`:class:`**`kivy.uix.textinput.TextInput`*** have.
 > | :hammer_and_wrench: | Control | Description |
 > | - | - | - |
 > | :heavy_check_mark: | ![shift](https://github.com/kmcasi/Python_Kivy/blob/main/doc/key_bind/shift.png)![left_click](https://github.com/kmcasi/Python_Kivy/blob/main/doc/key_bind/left-click.png) | Set selection range. |
