@@ -27,7 +27,7 @@
 > | :part_alternation_mark: | Multithreading. |
 > | :heavy_check_mark: | Change system cursor if some actions are available on the current mouse position. |
 > | :recycle: | Reduce line number updates. |
-> | :recycle: | Cursor and scroll jumps when the font is changed on run time. |
+> | :heavy_check_mark: | Cursor and scroll jumps when the font is changed on run time. |
 > 
 > Legend [ :heavy_check_mark: Done | :x: Not (yet) | :part_alternation_mark: Partial | :recycle: Remaking ]
 
