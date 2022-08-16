@@ -25,6 +25,7 @@
 > | :heavy_check_mark: | Dynamic line number width. |
 > | :heavy_check_mark: | Scroll bars with out loseing keyboard scrolling. |
 > | :part_alternation_mark: | Multithreading. |
+> | :heavy_check_mark: | Change system cursor if some actions are available on the current mouse position. |
 > | :recycle: | Reduce line number updates. |
 > | :recycle: | Cursor and scroll jumps when the font is changed on run time. |
 > 
@@ -66,6 +67,7 @@ If you want to see a specific subject, click on one of listed ones.
 >                  , margin_scroll:int|float = 0, margin_scroll_cursor:list|tuple = List(31.5, _type=float)
 >                  , padding_ln:list|tuple = List(3), padding_txt:list|tuple = List(6), spacing:int = 0
 >                  , align_ln:str = "right", align_txt:str = "left"
+>                  , pos_scroll_h:str = "bottom", pos_scroll_v:str = "right"
 >                  , color_ln:ColorProperty = "606366", color_txt:ColorProperty = "A9B7C6"
 >                  , color_cursor:ColorProperty = "806F9F", color_selection:ColorProperty = "0066994D"
 >                  , color_scroll:ColorProperty = "A6A6A680", color_scroll_inactive:ColorProperty = "A6A6A647"
@@ -96,6 +98,8 @@ If you want to see a specific subject, click on one of listed ones.
 > | margin_scroll_cursor | `list` <br /> `tuple` | [31.5, 31.5, <br /> 31.5, 31.5] | Margin between the cursor and the side of the scrollview when auto scrolling is triggered. <br /> `[margin_left, margin_top, margin_right, margin_bottom]` |
 > | padding_ln | `list` <br /> `tuple` | [3, 3, 3, 3] | Padding of the line number. <br /> `[padding_left, padding_top, padding_right, padding_bottom]` |
 > | padding_txt | `list` <br /> `tuple` | [6, 6, 6, 6] | Padding of the text. <br /> `[padding_left, padding_top, padding_right, padding_bottom]` |
+> | pos_scroll_h | `str` | "bottom" | Position of the horizontal scroll bar. <br /> **Options:** `"bottom"` and `"top"` |
+> | pos_scroll_v | `str` | "right" | Position of the vertical scroll bar. <br /> **Options:** `"left"` and `"right"` |
 > | RTL | `bool` | **False** | Right to left base direction of text. |
 > | spacing | `int` | 0 | Space between the lines. |
 > | width_ln | `int` | 24 | Width of the line number. |
@@ -134,7 +138,7 @@ If you want to see a specific subject, click on one of listed ones.
 > | - | - |
 > | color_info | If not provided, will update base on `color_ln` with a slightly  difference of 10%. |
 > | bg_info | If not provided, will update base on `bg_ln` with a slightly  difference of 5%. |
-> | padding_ln <br /> padding_txt | Will auto sync vertically to avoid line number offset. <br /> What I mean is that the `padding_top` and `padding_bottom` will be changed with biggest value of this two. |
+> | padding_ln <br /> padding_txt | Will auto sync vertically to avoid line number offset. <br /> **What I mean is:** On `padding_ln` just the horizontal padding values will be considered and the vertical ones will be taken fron `padding_txt`. |
 > - :information_source: The `crash` value will ***not*** prevent the *`:api:`**`kivy`*** to crash if the argument type is a wrong one.
 >   - This option is to prevent hard times on debug when you get an crash with a wrong value.
 > - :warning: Will log a warning[^warning] message in case a specified argument is not defined.
