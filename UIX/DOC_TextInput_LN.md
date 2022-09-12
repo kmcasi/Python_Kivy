@@ -199,5 +199,4 @@ If you want to see a specific subject, click on one of listed ones.
 <br /><br />
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ FOOT ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
-[^error]: Error will print a message on console and will crash the app immediately.
 [^warning]: Warning will print a message on console and will ignore it.
