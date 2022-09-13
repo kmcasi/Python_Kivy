@@ -630,8 +630,7 @@ class TextInput_LN(BoxLayout):
         # UIX elements size hint
         self._LineNumber.size_hint = (1, None)
         self._Text.size_hint = (None, None)
-        # self.__Line_active.size_hint = (1, None)
-        self.__Line_active.size_hint = (.5, None)
+        self.__Line_active.size_hint = (1, None)
 
     def __add_widget(self) -> None:
         """Adding UIX elements.
