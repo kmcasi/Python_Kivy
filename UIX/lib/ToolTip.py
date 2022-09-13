@@ -140,6 +140,15 @@ class ToolTip(Widget):
     :attr:`text` is a :class:`~kivy.properties.StringProperty` and defaults to "ToolTip message".
     '''
 
+    markup = BooleanProperty(False)
+    '''If True, the text will be rendered using the :class:`~kivy.core.text.markup.MarkupLabel`: you can change the
+    style of the text using tags.
+    
+    Check the :doc:`api-kivy.core.text.markup` documentation for more information.
+
+    :attr:`markup` is a :class:`~kivy.properties.BooleanProperty` and defaults to False.
+    '''
+
     opacity = NumericProperty(1.0)
     '''Opacity of the tooltip.
     
@@ -166,6 +175,7 @@ class ToolTip(Widget):
         self.fbind("font_name", self.__compute_message)
         self.fbind("font_size", self.__compute_message)
         self.fbind("text", self.__compute_message)
+        self.fbind("markup", self.__compute_message)
 
         # Private variables
         self.__target:Widget = target
@@ -180,7 +190,7 @@ class ToolTip(Widget):
         self.__layout = RelativeLayout()
         self.__border = Image(color=self.border_color, allow_stretch=True, keep_ratio=False)
         self.__background = Image(color=self.background_color, allow_stretch=True, keep_ratio=False)
-        self.__label = Label(text=self.text, color=self.text_color, markup=True
+        self.__label = Label(text=self.text, color=self.text_color, markup=self.markup
                              , font_name=self.font_name, font_size=self.font_size)
 
         # Settings
@@ -324,6 +334,7 @@ class ToolTip(Widget):
         :return:        Nothing."""
         self.__label.font_name = self.font_name
         self.__label.font_size = self.font_size
+        self.__label.markup = self.markup
         self.__label.text = self.text
 
         self.__label.texture_update()

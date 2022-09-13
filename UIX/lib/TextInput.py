@@ -437,7 +437,7 @@ class TextInput_LN(BoxLayout):
                                            font_name=self.info_font_name, font_size=self.info_font_size)
 
         # ToolTip's
-        self.__tt_ic = ToolTip(self.__infos["cursor"], position=["top"], animations=self.animations,
+        self.__tt_ic = ToolTip(self.__infos["cursor"], position=["top"], animations=self.animations, markup=True,
                                text="Cursor position "
                                     "[size={size}]([color={color}][b]{subtext}[/b][/color])[/size]"
                                     "\n\n[color={todo_color}]TODO:[size={todo_size}][/size][/color]\n{todo}".format(
@@ -448,7 +448,7 @@ class TextInput_LN(BoxLayout):
                                    todo_size=24,
                                    todo="Move cursor to the specified\nposition will be available\non the next update.")
                                )
-        self.__tt_il = ToolTip(self.__infos["ln_sep"], position=["top"], animations=self.animations,
+        self.__tt_il = ToolTip(self.__infos["ln_sep"], position=["top"], animations=self.animations, markup=True,
                                text="Line separator: [color={color}][b]{subtext}[/b][/color]"
                                     "\n\n[color={todo_color}]TODO:[size={todo_size}][/size][/color]\n{todo}".format(
                                    color = Make.Color(self.color_info, .1, True),
@@ -457,21 +457,21 @@ class TextInput_LN(BoxLayout):
                                    todo_size=24,
                                    todo="Changing the line separator\nwill be available on\nthe next update.")
                                )
-        self.__tt_ie = ToolTip(self.__infos["encoding"], position=["top"], animations=self.animations,
+        self.__tt_ie = ToolTip(self.__infos["encoding"], position=["top"], animations=self.animations, markup=True,
                                text="File encoding"
                                     "\n\n[color={todo_color}]TODO:[size={todo_size}][/size][/color]\n{todo}".format(
                                    todo_color="#A8C023",
                                    todo_size=24,
                                    todo="Changing the file encoding\nwill be available on\nthe next update.")
                                )
-        self.__tt_it = ToolTip(self.__infos["tabs"], position=["top"], animations=self.animations,
+        self.__tt_it = ToolTip(self.__infos["tabs"], position=["top"], animations=self.animations, markup=True,
                                text="Tab size"
                                     "\n\n[color={todo_color}]TODO:[size={todo_size}][/size][/color]\n{todo}".format(
                                    todo_color="#A8C023",
                                    todo_size=24,
                                    todo="Changing the tab size\nwill be available on\nthe next update.")
                                )
-        self.__tt_is = ToolTip(self.__infos["source"], position=["top"], animations=self.animations,
+        self.__tt_is = ToolTip(self.__infos["source"], position=["top"], animations=self.animations, markup=True,
                                text="File type"
                                     "\n\n[color={todo_color}]TODO:[size={todo_size}][/size][/color]\n{todo}".format(
                                    todo_color="#A8C023",

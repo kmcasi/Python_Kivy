@@ -50,6 +50,7 @@ If you want to see a specific subject, click on one of listed ones.
 > | font_size | `NumericProperty` | `16sp` | Font size of the text and the line numbers in pixels. |
 > | position | `OptionProperty` | `["cursor"]` | Sets the position of the tooltip base on the target position. <br /> **Options:** <br /> `["cursor"]`, `["top"]`, `["bottom"]`, `["left"]`, `["right"]` and combinations of two of them like `["cursor", "top"]`. |
 > | text | `StringProperty` | `"ToolTip message"` | Text of the tooltip. |
+> | markup | `BooleanProperty` | **`False`** | If True, the text will be rendered using the *`:class:`**`~kivy.core.text.markup.MarkupLabel`***. |
 > | opacity | `NumericProperty` | `1.0` | Opacity of the tooltip. |
 <!--
 > | arg | `type` | def | info |
