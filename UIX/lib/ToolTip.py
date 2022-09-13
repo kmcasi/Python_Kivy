@@ -43,14 +43,14 @@ class ToolTip(Widget):
     :attr:`padding` is a :class:`~kivy.properties.VariableListProperty` and defaults to [3, 3, 3, 3].
     '''
 
-    border = NumericProperty(2)
+    border = NumericProperty("2dp")
     '''Border size, in pixels.
 
-    :attr:`border` is a :class:`~kivy.properties.NumericProperty` and defaults to 2.
+    :attr:`border` is a :class:`~kivy.properties.NumericProperty` and defaults to 2 :attr:`~kivy.metrics.dp`.
     '''
 
     text_color = ColorProperty("646464")
-    '''Text color, in the format RGBA.
+    '''Text color, in RGBA format.
     
     This attribute can be used to set the text color.
     
@@ -58,13 +58,13 @@ class ToolTip(Widget):
     '''
 
     background_color = ColorProperty("262626")
-    '''Background color, in the format RGBA.
+    '''Background color, in RGBA format.
     
     :attr:`background_color` is a :class:`~kivy.properties.ColorProperty` and defaults to "#262626FF".
     '''
 
     border_color = ColorProperty("606366")
-    '''Border color, in the format RGBA.
+    '''Border color, in RGBA format.
     
     :attr:`border_color` is a :class:`~kivy.properties.ColorProperty` and defaults to "#606366FF".
     '''

@@ -1,9 +1,13 @@
 <!-- https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md -->
+
+# :memo: TextInput_LN documentation
+Custom TextInput class with line numbers, scroll bars and more other futures fully customizable.
+
+<br />
+
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ PREV ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
 
-# Preview
-> Custom TextInput class with line numbers and other futures.
-> 
+# 👀 Preview
 > ![Preview TextInputCustom](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/TextInputCustom.png)
 > 
 > Extra control functions than what allready *`:class:`**`kivy.uix.textinput.TextInput`*** have.
@@ -36,10 +40,10 @@ If you want to see a specific subject, click on one of listed ones.
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ LINK ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
 | Function | Short info |
 | - | - |
-| [initialization](#label-custom-textinput-class-with-line-numbers) | Custom TextInput class with line numbers. |
+| [initialization](#label-initialization-textinput-class) | Initialization of this custom TextInput class. |
 | [binding](#label-useful-for-controlling-text-binding) | Useful for controlling text bind. |
 | [Clear](#label-deleting-text-in-the-specified-range) | Deleting text in the specified range. |
-| [text](#label-provide-you-the-created-text) | Provide you the created text. |
+| [text](#label-provide-you-the-existing-text) | Provide you the existing text. |
 | [SetText](#label-let-you-setting-a-new-text) | Let you setting a new text. |
 | [AddText](#label-let-you-adding-text-after-the-existing-one) | Let you adding text after the existing one. |
 | [InsertText](#label-let-you-adding-text-on-the-cursor-position) | Let you adding text on the cursor position. |
@@ -52,7 +56,7 @@ If you want to see a specific subject, click on one of listed ones.
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ CODE ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ TextInput_LN ]=-=[] -->
-> #### :label: Custom TextInput class with line numbers.
+> #### :label: Initialization TextInput class.
 > Links [ [:books: Doc](#-documentation) | [:arrow_down_small: Down](#label-useful-for-controlling-text-binding) ]
 > ```python3
 > TextInput.TextInput_LN(**kwargs)
@@ -64,34 +68,30 @@ If you want to see a specific subject, click on one of listed ones.
 > | align_ln | `OptionProperty` | `auto` | Horizontal alignment of the line numbers. <br /> **Options:** `"auto"`, `"left"`, `"center"` and `"right"` |
 > | align_txt | `OptionProperty` | `auto` | Horizontal alignment of the text. <br /> **Options:** `"auto"`, `"left"`, `"center"` and `"right"` |
 > | animations | `BooleanProperty` | **`True`** | Use animations. |
-> | auto_indent | `BooleanProperty` | **`True`** | Automatically indent multiline text. |
-> | bg_info | `ColorProperty` | `#262626` | Background color of the information's, in RGBA format. <br />This is deprecated and will be removed on the next update. Will be available on *`:class:`**`TextEditor.TextEditor`***. |
+> | auto_indent | `BooleanProperty` | **`True`** | Automatically indent new text line. |
 > | bg_ln | `ColorProperty` | `#313335` | Background color of the line numbers, in RGBA format. |
 > | bg_txt | `ColorProperty` | `#2B2B2B` | Background color of the text, in RGBA format. |
 > | color_cursor | `ColorProperty` | `#806F9F` | Color of the cursor, in RGBA format. |
-> | color_info | `ColorProperty` | `#646464` | Color of the text information's, in RGBA format. <br />This is deprecated and will be removed on the next update. Will be available on *`:class:`**`TextEditor.TextEditor`***. |
 > | color_line_active | `ColorProperty` | `#3F3F3F80` | Color of the active line, in RGBA format. |
 > | color_ln | `ColorProperty` | `#606366` | Color of the line numbers, in RGBA format. |
 > | color_scroll | `ColorProperty` | `#A6A6A680` | Color of the active scroll bars, in RGBA format. |
 > | color_scroll_inactive | `ColorProperty` | `#A6A6A647` | Color of the inactive scroll bars, in RGBA format. |
 > | color_selection | `ColorProperty` | `#0066994D` | Color of the selection, in RGBA format. |
 > | color_txt | `ColorProperty` | `#A9B7C6` | Color of the text, in RGBA format. |
+> | cursor_blink | `BooleanProperty` | **`True`** | Whether the graphic cursor should blink or not. |
 > | font_name | `StringProperty` | `Roboto` | Filename of the font to use. <br /> If not provided, this value is taken from *`:class:`**`kivy.config.Config`***. |
 > | font_size | `NumericProperty` | `18sp` | Font size of the text and the line numbers in pixels. |
-> | info_font_name | `StringProperty` | `Roboto` | Filename of the font to use for the text information's. <br /> If not provided, this value is taken from *`:class:`**`kivy.config.Config`***. <br />This is deprecated and will be removed on the next update. Will be available on *`:class:`**`TextEditor.TextEditor`***. |
-> | info_font_size | `NumericProperty` | `14sp` | Font size of the text information's in pixels. <br />This is deprecated and will be removed on the next update. Will be available on *`:class:`**`TextEditor.TextEditor`***. |
 > | margin_scroll | `NumericProperty` | `0` | Margin between the scroll bars and the margins of the text. |
 > | margin_scroll_cursor | `VariableListProperty` | `[31.5]` | Padding between the cursor and the text area. <br />When the cursor is out side of this limits the text will auto scrolling to keep the cursor inside the visible area. <br /> `[margin_left, margin_top, margin_right, margin_bottom]` |
-> | padding_info | `VariableListProperty` | `[6, 3]` | Padding of the text information's. <br />This is deprecated and will be removed on the next update. Will be available on *`:class:`**`TextEditor.TextEditor`***. <br /> `[padding_left, padding_top, padding_right, padding_bottom]` |
 > | padding_ln | `VariableListProperty` | `[3]` | Horizontal padding of the line numbers. <br /> `[padding_left, padding_right]` |
 > | padding_txt | `VariableListProperty` | `[6]` | Padding of the text. <br /> `[padding_left, padding_top, padding_right, padding_bottom]` |
 > | pos_ln | `OptionProperty` | `auto` | Position of the line numbers. <br /> **Options:** `"auto"`, `"left"` and `"right"` |
 > | pos_scroll_h | `OptionProperty` | `bottom` | Position of the horizontal scroll bar. <br /> **Options:** `"top"` and `"bottom"` |
 > | pos_scroll_v | `OptionProperty` | `right` | Position of the vertical scroll bar. <br /> **Options:** `"left"` and `"right"` |
 > | pos_scroll | `ReferenceListProperty` | `bottom`, `right` | Position of the scroll bars. <br /> `pos_scroll_h, pos_scroll_v` |
+> | readonly | `BooleanProperty` | **`False`** | If True, the user will not be able to change the content of a textinput. |
 > | RTL | `BooleanProperty` | **`False`** | Use right to left as base direction of the text, this impacts horizontal alignment and the line numbers position when :attr:`align_txt`, :attr:`align_ln` and :attr:`pos_ln` are `auto` (the default). |
 > | spacing_content | `NumericProperty` | `0` | Space taken up between the content. |
-> | spacing_info | `VariableListProperty` | `[10, 0]` | Spacing of the text information's. <br />This is deprecated and will be removed on the next update. Will be available on *`:class:`**`TextEditor.TextEditor`***. |
 > | spacing_line | `NumericProperty` | `0` | Space taken up between the lines. |
 > | width_cursor | `NumericProperty` | `2dp` | Thickness of the cursor. |
 > | width_ln | `NumericProperty` | `24dp` | Minimum width of the line numbers. |
@@ -105,7 +105,7 @@ If you want to see a specific subject, click on one of listed ones.
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ binding ]=-=[] -->
 > #### :label: Useful for controlling text binding.
-> Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-custom-textinput-class-with-line-numbers) | [:arrow_down_small: Down](#label-deleting-text-in-the-specified-range) ]
+> Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-initialization-textinput-class) | [:arrow_down_small: Down](#label-deleting-text-in-the-specified-range) ]
 > ```python3
 > TextInput.TextInput_LN.binding(**kwargs)
 > ```
@@ -115,7 +115,7 @@ If you want to see a specific subject, click on one of listed ones.
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ Clear ]=-=[] -->
 > #### :label: Deleting text in the specified range.
-> Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-useful-for-controlling-text-binding) | [:arrow_down_small: Down](#label-provide-you-the-created-text) ]
+> Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-useful-for-controlling-text-binding) | [:arrow_down_small: Down](#label-provide-you-the-existing-text) ]
 > ```python3
 > TextInput.TextInput_LN.Clear(_from:int = 0, _to:int = -1)
 > ```
@@ -129,7 +129,7 @@ If you want to see a specific subject, click on one of listed ones.
 <br /><br />
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ text ]=-=[] -->
-> #### :label: Provide you the created text.
+> #### :label: Provide you the existing text.
 > Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-deleting-text-in-the-specified-range) | [:arrow_down_small: Down](#label-let-you-setting-a-new-text) ]
 > ```python3
 > TextInput.TextInput_LN.text
@@ -166,7 +166,7 @@ If you want to see a specific subject, click on one of listed ones.
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ SetText ]=-=[] -->
 > #### :label: Let you setting a new text.
-> Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-provide-you-the-created-text) | [:arrow_down_small: Down](#label-let-you-adding-text-after-the-existing-one) ]
+> Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-provide-you-the-existing-text) | [:arrow_down_small: Down](#label-let-you-adding-text-after-the-existing-one) ]
 > ```python3
 > TextInput.TextInput_LN.SetText(*values:any, sep:str|None = " ", end:str|None = "\n")
 > ```
@@ -199,4 +199,5 @@ If you want to see a specific subject, click on one of listed ones.
 <br /><br />
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ FOOT ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
+[^error]: Error will print a message on console and will crash the app immediately.
 [^warning]: Warning will print a message on console and will ignore it.

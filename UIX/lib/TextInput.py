@@ -146,6 +146,12 @@ class TextInput_LN(BoxLayout):
     :attr:`color_txt` is a :class:`~kivy.properties.ColorProperty` and defaults to "#A9B7C6FF".
     '''
 
+    cursor_blink = BooleanProperty(True)
+    '''Whether the graphic cursor should blink or not.
+
+    :attr:`cursor_blink` is a :class:`~kivy.properties.BooleanProperty` and defaults to True.
+    '''
+
     font_name = StringProperty(DEFAULT_FONT)
     '''Filename of the font to use for the text and the line numbers. The path can be absolute or relative.
     
@@ -278,21 +284,17 @@ class TextInput_LN(BoxLayout):
     (:attr:`pos_scroll_h`, :attr:`pos_scroll_v`)
     '''
 
+    readonly = BooleanProperty(False)
+    '''If True, the user will not be able to change the content of a textinput.
+
+    :attr:`readonly` is a :class:`~kivy.properties.BooleanProperty` and defaults to False.
+    '''
+
     RTL = BooleanProperty(False)
     '''Use right to left as base direction of the text, this impacts horizontal alignment and the line numbers position
     when :attr:`align_txt`, :attr:`align_ln` and :attr:`pos_ln` are `auto` (the default).
 
     :attr:`RTL` is a :class:`~kivy.properties.BooleanProperty` and defaults to False.
-    '''
-
-    # TODO: Deprecated!
-    #  Remove on the next update.
-    spacing = NumericProperty(0)
-    '''This is deprecated and will be removed on the next update. Use :attr:`spacing_line` instead!
-    
-    An warning message will be triggered on the console if you still use this key argument.
-
-    :attr:`spacing_line` is a :class:`~kivy.properties.NumericProperty` and defaults to 0.
     '''
 
     spacing_content = NumericProperty(0)
@@ -418,7 +420,7 @@ class TextInput_LN(BoxLayout):
                                , halign=self.align_txt, base_direction="rtl" if self.RTL else "ltr"
                                , font_name=self.font_name, font_size=self.font_size
                                , padding=self.padding_txt, cursor_width=self.width_cursor
-                               , line_spacing=self.spacing_line
+                               , line_spacing=self.spacing_line, cursor_blink=self.cursor_blink, readonly=self.readonly
                                , foreground_color=self.color_txt, background_color="00000000"
                                , cursor_color=self.color_cursor, selection_color=self.color_selection)
 
@@ -582,6 +584,8 @@ class TextInput_LN(BoxLayout):
     def __compute_text(self, *noUse) -> None:
         self._Text.tab_width = int(self.width_tab)
         self._Text.cursor_width = self.width_cursor
+        self._Text.cursor_blink = self.cursor_blink
+        self._Text.readonly = self.readonly
 
     def __compute_scroll_bar_area(self) -> None:
         if self.pos_scroll_v == "left":
@@ -626,7 +630,8 @@ class TextInput_LN(BoxLayout):
         # UIX elements size hint
         self._LineNumber.size_hint = (1, None)
         self._Text.size_hint = (None, None)
-        self.__Line_active.size_hint = (1, None)
+        # self.__Line_active.size_hint = (1, None)
+        self.__Line_active.size_hint = (.5, None)
 
     def __add_widget(self) -> None:
         """Adding UIX elements.
@@ -684,45 +689,40 @@ class TextInput_LN(BoxLayout):
         self.fbind("align_txt", self.__compute_position)
         self.fbind("animations", self.__compute_bool)
         self.fbind("auto_indent", self.__compute_bool)
-        self.fbind("bg_info", self.__compute_color)
         self.fbind("bg_ln", self.__compute_color)
         self.fbind("bg_txt", self.__compute_color)
         self.fbind("color_cursor", self.__compute_color)
-        self.fbind("color_info", self.__compute_color)
         self.fbind("color_line_active", self.__compute_color)
         self.fbind("color_ln", self.__compute_color)
         self.fbind("color_scroll", self.__compute_color)
         self.fbind("color_scroll_inactive", self.__compute_color)
         self.fbind("color_selection", self.__compute_color)
         self.fbind("color_txt", self.__compute_color)
+        self.fbind("cursor_blink", self.__compute_text)
         self.fbind("font_name", self.__compute_font)
         self.fbind("font_size", self.__compute_font)
-        # self.fbind("info_font_name", self.__compute_font)
-        # self.fbind("info_font_size", self.__compute_font)
+        self.fbind("bg_info", self.__compute_color)
+        self.fbind("color_info", self.__compute_color)
         self.fbind("margin_scroll", self.__compute_size)
         self.fbind("margin_scroll_cursor", self.__auto_scroll)
-        # self.fbind("padding_info", self.__compute_padding)
         self.fbind("padding_ln", self.__compute_padding)
         self.fbind("padding_txt", self.__compute_padding)
         self.fbind("pos_ln", self.__compute_position)
         self.fbind("pos_scroll_h", self.__compute_position)
         self.fbind("pos_scroll_v", self.__compute_position)
         self.fbind("spacing_content", self.__compute_spacing)
-        # self.fbind("spacing_info", self.__compute_spacing)
         self.fbind("spacing_line", self.__compute_spacing)
+        self.fbind("readonly", self.__compute_text)
         self.fbind("RTL", self.__compute_RTL)
         self.fbind("width_cursor", self.__compute_text)
         self.fbind("width_ln", self.__compute_size)
         self.fbind("width_scroll", self.__compute_size)
         self.fbind("width_tab", self.__compute_text)
 
-        # Deprecated
-        self.fbind("spacing", self.__deprecated_spacing)
-
-    def __deprecated_spacing(self, *noUse) -> None:
-        self.spacing_line = self.spacing
-        WARNING("Deprecated: Key word 'spacing' is deprecated and will be removed on the next update. "
-                "Use 'spacing_line' instead.")
+        # self.fbind("info_font_name", self.__compute_font)
+        # self.fbind("info_font_size", self.__compute_font)
+        # self.fbind("padding_info", self.__compute_padding)
+        # self.fbind("spacing_info", self.__compute_spacing)
 
     def _on_resize(self, instance:Window, width:int, height:int) -> None:
         """When window is resizing, the text and line numbers need resizing to mach the ScrollView size.
@@ -1050,7 +1050,7 @@ class TextInput_LN(BoxLayout):
             # Long press will trigger same logic multiple times
             # So we check if the flags was triggered already
             # before doing same flag trigger multiple times
-            self._Text.readonly = "alt" in modifiers
+            if not self.readonly: self._Text.readonly = "alt" in modifiers
             if not self.__ctrl and "ctrl" in modifiers: self.__ctrl = True
 
             # [Home, End, Page Up, Page Down]: Flagging auto scrolling animation
@@ -1394,222 +1394,6 @@ class TextInput_LN(BoxLayout):
         self._Text.cursor = cursor
         self.__Scroll_Text.scroll_x = scroll_x
         self.__Scroll_Text.scroll_y = scroll_y
-
-    @deprecated(msg="""The main logic was changed again to be consistent with kivy API.
-        Function 'TextInput_LN.Theme()' will be removed on the next update.
-        You can change variables by calling them directly like below
-
-        >>> self.myText = TextInput_LN()
-        >>> self.myText.font_size = "24sp"
-        >>> self.myText.color_txt = "#FF00FF"
-        """)
-    def Theme(self, crash:bool=True, **kwargs) -> None:
-        NAME:str = "%s.%s" % (self.__class__.__name__, THIS().f_code.co_name)
-        CHECKING = Check(NAME, close=crash)
-
-        updated_padding:bool = False
-        updated_font:bool = False
-        info:dict[str, bool] = {"update":False, "color":False, "bg":False}
-        bk_font:tuple[tuple, float, float] = (self._Text.cursor
-                                              , self.__Scroll_Text.scroll_x, self.__Scroll_Text.scroll_y)
-
-        # Key checks are sorted alphabetically
-        for key, arg in kwargs.items():
-
-            if key == "align_ln":
-                with CHECKING.arg_type(key, arg, str):
-                    self.align_ln = arg
-                    self._LineNumber.halign = arg
-
-            elif key == "align_txt":
-                with CHECKING.arg_type(key, arg, str):
-                    self.align_txt = arg
-                    self._Text.halign = arg
-
-            elif key == "animations":
-                with CHECKING.arg_type(key, arg, bool, ignored=[int]):
-                    self.animations = bool(arg)
-
-            elif key == "auto_indent":
-                with CHECKING.arg_type(key, arg, bool, ignored=[int]):
-                    self.auto_indent = bool(arg)
-                    self._Text.auto_indent = self.auto_indent
-
-            elif key == "bg_info":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.bg_info = arg
-                    self.__BG_info.color = arg
-                    info["bg"] = True
-
-            elif key == "bg_ln":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.bg_ln = arg
-                    self.__BG_ln.color = arg
-                    info["update"] = True
-
-            elif key == "bg_txt":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.bg_txt = arg
-                    self.__BG_txt.color = arg
-
-            elif key == "color_cursor":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.color_cursor = arg
-                    self._Text.cursor_color = arg
-
-            elif key == "color_info":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.color_info = arg
-                    for index in self.__infos.values(): index.color = arg
-                    info["color"] = True
-
-            elif key == "color_line_active":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.color_line_active = arg
-                    self.__Line_active.color = arg
-
-            elif key == "color_ln":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.color_ln = arg
-                    self._LineNumber.disabled_foreground_color = arg
-
-            elif key == "color_scroll":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.color_scroll = arg
-                    self.__Scroll_Text.bar_color = arg
-
-            elif key == "color_scroll_inactive":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.color_scroll_inactive = arg
-                    self.__Scroll_Text.bar_inactive_color = arg
-
-            elif key == "color_selection":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.color_selection = arg
-                    self._Text.selection_color = arg
-
-            elif key == "color_txt":
-                with CHECKING.RGBA(key, arg, ColorProperty, str, list, tuple):
-                    self.color_txt = arg
-                    self._Text.foreground_color = arg
-
-            elif key == "font_name":
-                with CHECKING.arg_type(key, arg, str):
-                    self._LineNumber.font_name = self._Text.font_name = self.font_name = arg
-                    updated_font = True
-
-            elif key == "font_size":
-                with CHECKING.arg_type(key, arg, int):
-                    self._LineNumber.font_size = self._Text.font_size = self.font_size = arg
-                    updated_font = True
-
-            elif key == "margin_scroll":
-                with CHECKING.arg_type(key, arg, int, float, ignored=[bool]):
-                    self.width_cursor = float(arg)
-                    self.__Scroll_Text.bar_margin = self.width_cursor
-
-            elif key == "margin_scroll_cursor":
-                with CHECKING.arg_type(key, arg, list, tuple, ignored=[bool]):
-                    if len(arg) != 4:  arg = List(*arg, size=4, _type=float)
-                    self.margin_scroll_cursor = arg
-
-            elif key == "padding_ln":
-                with CHECKING.arg_type(key, arg, list, tuple, ignored=[int, float]):
-                    if len(arg) != 4:  arg = List(*arg, size=4, _type=float)
-                    self.padding_ln = arg
-                    updated_padding = True
-
-            elif key == "padding_txt":
-                with CHECKING.arg_type(key, arg, list, tuple):
-                    if len(arg) != 4:  arg = List(*arg, size=4, _type=float)
-                    self.padding_txt = arg
-                    updated_padding = True
-
-            elif key == "pos_scroll_h":
-                with CHECKING.arg_type(key, arg, str):
-                    self.pos_scroll_h = arg
-                    self.__Scroll_Text.bar_pos_x = arg
-
-            elif key == "pos_scroll_v":
-                with CHECKING.arg_type(key, arg, str):
-                    self.pos_scroll_v = arg
-                    self.__Scroll_Text.bar_pos_y = arg
-
-            elif key == "RTL":
-                with CHECKING.arg_type(key, arg, bool, int):
-                    self.RTL = bool(arg)
-                    self._Text.base_direction = "rtl" if self.RTL else "ltr"
-
-            elif key == "spacing_content":
-                with CHECKING.arg_type(key, arg, int, float, ignored=[bool]):
-                    self.spacing_content = float(arg)
-                    self.__Layout.spacing = self.spacing_content
-                    self.__Layout_Content.spacing = self.spacing_content
-
-            elif key == "spacing_line":
-                with CHECKING.arg_type(key, arg, int, float, ignored=[bool]):
-                    self.spacing_line = float(arg)
-                    self._Text.line_spacing = self.spacing_line
-                    self._LineNumber.line_spacing = self.spacing_line
-
-            elif key == "width_ln":
-                with CHECKING.arg_type(key, arg, int, float, ignored=[bool]):
-                    self.width_ln = float(arg)
-                    self.__auto_width_ln()
-
-            elif key == "width_tab":
-                with CHECKING.arg_type(key, arg, int, ignored=[bool]):
-                    self.width_tab = int(arg)
-                    self._Text.tab_width = self.width_tab
-                    self._update_info(tabs=True)
-
-            elif key == "width_cursor":
-                with CHECKING.arg_type(key, arg, int, float, ignored=[bool]):
-                    self.width_cursor = float(arg)
-                    self._Text.cursor_width = self.width_cursor
-
-            elif key == "width_scroll":
-                with CHECKING.arg_type(key, arg, int, float, ignored=[bool]):
-                    self.width_scroll = float(arg)
-                    self.__Scroll_Text.bar_width = self.width_scroll
-
-            else: WARNING("%s, do not have \"%s\" defined or can not be used as theme style.", NAME, key)
-
-        self._LineNumber._trigger_update_graphics()
-        self._Text._trigger_update_graphics()
-
-        # If padding was changed
-        if updated_padding:
-            # self.__sync_padding()
-            self._LineNumber.padding = self.padding_ln
-            self._Text.padding = self.padding_txt
-
-            # In case the font was not changed
-            if not updated_font:
-                self.__auto_width_ln()
-                Clock.schedule_once(lambda _:self.__auto_text_size())
-
-        # If font was changed
-        if updated_font:
-            self.__find_width_ln_min()
-            self.__auto_width_ln()
-            Clock.schedule_once(lambda _:(self.__auto_text_size(),
-                                          self.__fix_font_changes_bug(*bk_font),
-                                          self._Text.cancel_selection()))
-
-        # If line number background was changed but not and the info colors
-        if info["update"]:
-            if not info["bg"]:
-                self.bg_info = Make.Color(self.bg_ln, 0.05)
-                self.__BG_info.color = self.bg_info
-
-            if not info["color"]:
-                self.color_info = Make.Color(self.color_ln, 0.1)
-                for index in self.__infos.values(): index.color = self.color_info
-
-    @deprecated(msg="Use 'text' instead with out round brackets. "
-                "Function 'TextInput_LN.GetText()' will be removed on the next update.")
-    def GetText(self) -> str: return self.text
 
     @property
     def text(self) -> str:

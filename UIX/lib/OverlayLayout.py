@@ -11,15 +11,22 @@ from lib.helper.List import List
 #// LOGIC
 class OverlayLayout(Layout):
     x = NumericProperty(0)
-    '''X position of the overlay layout.
+    '''Horizontal position of the overlay layout.
 
     :attr:`x` is a :class:`~kivy.properties.NumericProperty` and defaults to 0.
     '''
 
     y = NumericProperty(0)
-    '''Y position of the overlay layout.
+    '''Vertical position of the overlay layout.
 
     :attr:`y` is a :class:`~kivy.properties.NumericProperty` and defaults to 0.
+    '''
+
+    pos = ReferenceListProperty(x, y)
+    '''Position of the overlay layout.
+
+    :attr:`pos` is a :class:`~kivy.properties.ReferenceListProperty` of
+    (:attr:`x`, :attr:`y`) properties.
     '''
 
     width = NumericProperty(100)
@@ -44,18 +51,30 @@ class OverlayLayout(Layout):
         method.
     '''
 
-    pos = ReferenceListProperty(x, y)
-    '''Position of the overlay layout.
-
-    :attr:`pos` is a :class:`~kivy.properties.ReferenceListProperty` of
-    (:attr:`x`, :attr:`y`) properties.
-    '''
-
     size = ReferenceListProperty(width, height)
     '''Size of the overlay layout.
 
     :attr:`size` is a :class:`~kivy.properties.ReferenceListProperty` of
     (:attr:`width`, :attr:`height`) properties.
+    '''
+
+    # size_hint_x = NumericProperty(1, allownone=True)
+    '''Represents how much space the overlay should use from its parent's width.
+
+    :attr:`size_hint_x` is a :class:`~kivy.properties.NumericProperty` and defaults to 1.
+    '''
+
+    # size_hint_y = NumericProperty(1, allownone=True)
+    '''Represents how much space the overlay should use from its parent's height.
+
+    :attr:`size_hint_y` is a :class:`~kivy.properties.NumericProperty` and defaults to 1.
+    '''
+
+    # size_hint = ReferenceListProperty(size_hint_x, size_hint_y)
+    '''Size hint.
+
+    :attr:`size_hint` is a :class:`~kivy.properties.ReferenceListProperty` of
+    (:attr:`size_hint_x`, :attr:`size_hint_y`) properties.
     '''
 
     padding = VariableListProperty([0])
@@ -92,21 +111,30 @@ class OverlayLayout(Layout):
         new_height:list[float] = []
 
         for child in self.children:
-            child.pos = pos
+            # child.pos = pos
 
-            if child.size_hint_x is not None: child.width = size[0]
-            else: change_layout_size = True
+            if child.size_hint_x is not None:
+                child.width = size[0] * child.size_hint_x
+                child.x = pos[0] + (self.width - child.width) * child.size_hint_x
+            else:
+                child.x = pos[0]
+                change_layout_size = True
 
-            if child.size_hint_y is not None: child.height = size[1]
-            else: change_layout_size = True
+            if child.size_hint_y is not None:
+                child.height = size[1] * child.size_hint_y
+                child.y = pos[1] + (self.height - child.height) * child.size_hint_y
+            else:
+                child.y = pos[1]
+                change_layout_size = True
 
         if change_layout_size:
             for child in self.children:
                 new_width.append(child.width)
                 new_height.append(child.height)
+
             self.size = (max(new_width), max(new_height))
 
-    def __compute_size(self) -> tuple[float, float]:
+    def __compute_size(self, *noUse) -> tuple[float, float]:
         w:float = self.width - self.padding[0] - self.padding[2]
         h:float = self.height - self.padding[1] - self.padding[3]
         return w, h
