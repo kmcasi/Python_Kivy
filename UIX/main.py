@@ -722,7 +722,7 @@ class Main(App):
 
         files:str = "You can NOT drag and drop any more (for now)...\n" \
                     "Also check the documentation. In case you do not understand something.\n\n" \
-                    "https://github.com/kmcasi/Python_Kivy/blob/main/UIX/TextInput/README.md#warning-note"
+                    "https://github.com/kmcasi/Python_Kivy/blob/main/UIX/DOC_TextInput_LN.md"
 
         needs:str = "I found a small bug on the kivy text input it self and I send an pull request\n" \
                     "to fix that, but just in case if was not fixed yet then:" \
