@@ -120,6 +120,7 @@ class LineNumber(Widget):
 
     def __init__(self, text_input, **kwargs) -> None:
         super().__init__(**kwargs)
+        self.size_hint_x = None
 
         # Private variables
         self.__text_input:TextInput = text_input
