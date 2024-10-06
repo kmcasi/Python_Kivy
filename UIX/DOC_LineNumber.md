@@ -8,7 +8,7 @@ Custom line number class what will count the lines for the provided TextInput.
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ PREV ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
 
 # 👀 Preview
-> ![Preview LineNumber]([https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/TextInputCustom.png](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/LineNumberPreview_00.png))
+> ![Preview LineNumber](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/LineNumberPreview_00.png)
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ DOCS ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
 
