@@ -48,10 +48,9 @@ If you want to see a specific subject, click on one of listed ones.
 > | font_family | `StringProperty` | `None` | Tthis is only applicable when using *`:attr:`**`font_context`*** option. |
 > | font_name | `StringProperty` | `Roboto` | Filename of the font to use. <br /> If not provided, this value is taken from *`:class:`**`kivy.config.Config`***. |
 > | font_size | `NumericProperty` | `15sp` | Font size of the text and the line numbers in pixels. |
-> | position | `OptionProperty` | `["cursor"]` | Sets the position of the tooltip base on the target position. <br /> **Options:** <br /> `["cursor"]`, `["top"]`, `["bottom"]`, `["left"]`, `["right"]` and combinations of two of them like `["cursor", "top"]`. |
-> | markup | `BooleanProperty` | **`False`** | If True, the text will be rendered using the *`:class:`**`~kivy.core.text.markup.MarkupLabel`***. |
-> | opacity | `NumericProperty` | `1.0` | Opacity of the tooltip. |
-> | padding | `VariableListProperty` | `[3]` | Padding between the background and message. <br /> `[padding_left, padding_top, padding_right, padding_bottom]` |
+> | foreground_color | `ColorProperty` | `#000000` | Text color, in RGBA format. |
+> | padding | `VariableListProperty` | `[4, 4]` | Horizontal padding of the text. <br /> `[padding_left, padding_right]` |
+> | width_min | `NumericProperty` | `18sp` | Minimum desired width of the text in pixels. |
 <!--
 > | arg | `type` | def | info |
 -->
