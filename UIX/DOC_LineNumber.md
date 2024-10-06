@@ -29,7 +29,7 @@ If you want to see a specific subject, click on one of listed ones.
 > Links [ [:books: Doc](#-documentation) | [:arrow_down_small: Down](#label-example-of-usage) ]
 > - The LineNumber need to be pack out side of the ScrollView, if is used.
 > - The vertical position and the size of this class is automaitcally calculated.
-> - Is updateing base on provided TextInput, if is wrapping (do_wrap=True) or ScrollView is used as parent.
+> - Is updateing base on provided TextInput. No matter if ScrollView is used or not.
 
 <br /><br />
 
@@ -62,6 +62,7 @@ If you want to see a specific subject, click on one of listed ones.
 >         Config.set("input", "mouse", "mouse,multitouch_on_demand")
 > 
 >         self.grid_layout = GridLayout(cols=2)
+>         # CodeInput is subclass of TextInput.
 >         self.text_input = CodeInput(multiline=True, do_wrap=True, size_hint=(None, None), font_name="comic")
 >         self.line_number = LineNumber(self.text_input, font_name="comic", font_size="12sp")
 >         self.scroll_view = ScrollView(always_overscroll=False, scroll_type=["bars"], bar_width='11dp',
@@ -117,9 +118,10 @@ If you want to see a specific subject, click on one of listed ones.
 > ```
 > | Argument | Type | Default | Description |
 > | - | - | - | - |
+> | text_input | `TextInput` | **Must be provided** |Need to be provided, to be able to sync. |
 > | align | `OptionProperty` | `["right"]` | Horizontal alignment of the text. <br /> **Options:** <br /> `["left", "center", "right"]` |
 > | background_color | `ColorProperty` | `#FFFFFF` | Background color, in RGBA format. |
-> | background_texture | `StringProperty` | `atlas://data/images/defaulttheme/textinput` | Background image of the line numbers. |
+> | background_texture | `StringProperty` | `atlas://.../textinput` | Background image of the line numbers. <br /> `atlas://data/images/defaulttheme/textinput` |
 > | border | `ListProperty` | `[4,4,4,4]` | Border size, in pixels. Used with :attr:`background_texture`. |
 > | font_context | `StringProperty` | `None` | *None* means the font is resolved by *`:attr:`**`font_name`***. |
 > | font_family | `StringProperty` | `None` | Tthis is only applicable when using *`:attr:`**`font_context`*** option. |
