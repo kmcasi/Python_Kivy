@@ -5,6 +5,11 @@ Custom line number class what will count the lines for the provided TextInput.
 
 <br />
 
+<!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ PREV ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
+
+# 👀 Preview
+> ![Preview LineNumber]([https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/TextInputCustom.png](https://github.com/kmcasi/Python_Kivy/blob/main/PREVIEW/UIX/LineNumberPreview_00.png))
+
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ DOCS ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
 
 # 📚 Documentation
@@ -16,6 +21,7 @@ If you want to see a specific subject, click on one of listed ones.
 | [info](#label-information) | Some information what you need to be aware of. |
 | [example](#label-example-of-usage) | Example of usage. |
 | [initialization](#label-initialization-linenumber-class) | Initialization of this custom line number class. |
+| [source code](https://github.com/kmcasi/Python_Kivy/blob/main/UIX/lib/LineNumber.py) | All codes are just one file. Ready for copy-paste :smiling_face_with_three_hearts:. |
 <!--
 | [function](#tag) | info |
 -->
