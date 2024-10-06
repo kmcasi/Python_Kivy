@@ -34,7 +34,7 @@ class LineNumber(Widget):
     '''
 
     background_texture = StringProperty('atlas://data/images/defaulttheme/textinput')
-    '''Background image of the TextInput when it's not in focus.
+    '''Background image of the line numbers.
 
     :attr:`background_texture` is a :class:`~kivy.properties.StringProperty` and defaults to 
     'atlas://data/images/defaulttheme/textinput'.
