@@ -104,12 +104,12 @@ class LineNumber(Widget):
     :attr:`foreground_color` is a :class:`~kivy.properties.ColorProperty` and defaults to [0, 0, 0, 1] (black).
     '''
 
-    padding = VariableListProperty([4, 4], length=2)
+    padding = VariableListProperty([4], length=2)
     '''Horizontal padding of the text: [padding_left, padding_right].
 
     padding also accepts a one argument form [padding_horizontal].
 
-    :attr:`padding` is a :class:`~kivy.properties.VariableListProperty` and defaults to [0, 0].
+    :attr:`padding` is a :class:`~kivy.properties.VariableListProperty` and defaults to [4, 4].
     '''
 
     width_min = NumericProperty('18sp')
