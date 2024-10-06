@@ -14,7 +14,8 @@ If you want to see a specific subject, click on one of listed ones.
 | Function | Short info |
 | - | - |
 | [info](#label-information) | Some information what you need to be aware of. |
-| [initialization](#label-initialization-linenumber-class) | Initialization of this custom tool tip class. |
+| [example](#label-example-of-usage) | Example of usage. |
+| [initialization](#label-initialization-linenumber-class) | Initialization of this custom line number class. |
 <!--
 | [function](#tag) | info |
 -->
