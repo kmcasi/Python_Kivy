@@ -25,16 +25,92 @@ If you want to see a specific subject, click on one of listed ones.
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ INFO ]=-=[] -->
 > #### :label: Information.
-> Links [ [:books: Doc](#-documentation) | [:arrow_down_small: Down](#label-initialization-linenumber-class) ]
+> Links [ [:books: Doc](#-documentation) | [:arrow_down_small: Down](#label-example-of-usage) ]
 > - The LineNumber need to be pack out side of the ScrollView, if is used.
 > - The vertical position and the size of this class is automaitcally calculated.
 > - Is updateing base on provided TextInput, if is wrapping (do_wrap=True) or ScrollView is used as parent.
 
 <br /><br />
 
+<!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ EXAMPLE ]=-=[] -->
+> #### :label: Example of usage.
+> Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-information) | [:arrow_down_small: Down](#label-initialization-linenumber-class) ]
+> ```python3
+> #//|>-----------------------------------------------------------------------------------------------------------------<|
+> #//| Copyright (c) 01 Sep 2024. All rights are reserved by ASI
+> #//|>-----------------------------------------------------------------------------------------------------------------<|
+> 
+> #// IMPORT
+> from kivy.app import App
+> from kivy.clock import Clock
+> from kivy.config import Config
+> from kivy.core.window import Window
+> from kivy.uix.gridlayout import GridLayout
+> from kivy.uix.textinput import TextInput
+> from kivy.uix.codeinput import CodeInput
+> from kivy.uix.scrollview import ScrollView
+> 
+> from lib.LineNumber import LineNumber
+> 
+> 
+> #// LOGIC
+> class TextEditor(App):
+>     def __init__(self, **kwargs):
+>         super(TextEditor, self).__init__(**kwargs)
+>         # Remove touch simulation
+>         Config.set("input", "mouse", "mouse,multitouch_on_demand")
+> 
+>         self.grid_layout = GridLayout(cols=2)
+>         self.text_input = CodeInput(multiline=True, do_wrap=True, size_hint=(None, None), font_name="comic")
+>         self.line_number = LineNumber(self.text_input, font_name="comic", font_size="12sp")
+>         self.scroll_view = ScrollView(always_overscroll=False, scroll_type=["bars"], bar_width='11dp',
+>                                       size_hint_x=None, width=750)
+> 
+>         self.text_input.bind(text=self._update_text_height)
+>         Window.bind(size=self._update_size)
+> 
+>     def build(self):
+>         self.scroll_view.add_widget(self.text_input)
+> 
+>         self.grid_layout.add_widget(self.line_number)
+>         self.grid_layout.add_widget(self.scroll_view)
+> 
+>         return self.grid_layout
+> 
+>     def on_start(self):
+>         sturtup_text:str = ""
+> 
+>         with open(__file__) as file:
+>             sturtup_text = file.read()
+> 
+>         Clock.schedule_once(lambda _:self._set_startup_text(sturtup_text), 3)
+> 
+>     def _update_text_height(self, parent:TextInput, *_) -> None:
+>         height = len(parent._lines_rects) * parent.line_height
+>         height += parent.padding[1] + parent.padding[3]
+> 
+>         parent.height = max(height, self.scroll_view.height)
+>         parent.width = self.scroll_view.width
+> 
+>     def _update_size(self, parent:Window, size:tuple[int, int]) -> None:
+>         self.text_input.width = self.scroll_view.width = size[0] - self.line_number.width
+>         self.scroll_view.height = size[1]
+> 
+>     def _set_startup_text(self, text:str) -> None:
+>         self.text_input.text = text
+> 
+> 
+> #// RUN
+> if __name__ == '__main__':
+>     TextEditor().run()
+> 
+> ```
+
+<br /><br />
+
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ INIT ]=-=[] -->
 > #### :label: Initialization LineNumber class.
-> Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-information) ]
+> Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-example-of-usage) ]
 > ```python3
 > LineNumber.LineNumber(**kwargs)
 > ```
