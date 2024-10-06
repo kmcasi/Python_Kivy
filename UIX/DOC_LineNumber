@@ -1,0 +1,57 @@
+<!-- https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md -->
+
+# :bookmark_tabs: LineNumber
+Custom line number class what will count the lines for the provided TextInput.
+
+<br />
+
+<!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ DOCS ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
+
+# 📚 Documentation
+If you want to see a specific subject, click on one of listed ones.
+
+<!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ LINK ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
+| Function | Short info |
+| - | - |
+| [info](#label-information) | Some information what you need to be aware of. |
+| [initialization](#label-initialization-linenumber-class) | Initialization of this custom tool tip class. |
+<!--
+| [function](#tag) | info |
+-->
+
+<br /><br />
+
+<!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ CODE ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
+
+<!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ INFO ]=-=[] -->
+> #### :label: Information.
+> Links [ [:books: Doc](#-documentation) | [:arrow_down_small: Down](#label-initialization-linenumber-class) ]
+> - The LineNumber need to be pack out side of the ScrollView, if is used.
+> - The vertical position and the size of this class is automaitcally calculated.
+> - Is updateing base on provided TextInput, if is wrapping (do_wrap=True) or ScrollView is used as parent.
+
+<br /><br />
+
+<!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ INIT ]=-=[] -->
+> #### :label: Initialization LineNumber class.
+> Links [ [:books: Doc](#-documentation) | [:arrow_up_small: Up](#label-information) ]
+> ```python3
+> LineNumber.LineNumber(**kwargs)
+> ```
+> | Argument | Type | Default | Description |
+> | - | - | - | - |
+> | align | `OptionProperty` | `["right"]` | Horizontal alignment of the text. <br /> **Options:** <br /> `["left", "center", "right"]` |
+> | background_color | `ColorProperty` | `#FFFFFF` | Background color, in RGBA format. |
+> | background_texture | `StringProperty` | `atlas://data/images/defaulttheme/textinput` | Background image of the line numbers. |
+> | border | `ListProperty` | `[4,4,4,4]` | Border size, in pixels. Used with :attr:`background_texture`. |
+> | font_context | `StringProperty` | `None` | *None* means the font is resolved by *`:attr:`**`font_name`***. |
+> | font_family | `StringProperty` | `None` | Tthis is only applicable when using *`:attr:`**`font_context`*** option. |
+> | font_name | `StringProperty` | `Roboto` | Filename of the font to use. <br /> If not provided, this value is taken from *`:class:`**`kivy.config.Config`***. |
+> | font_size | `NumericProperty` | `15sp` | Font size of the text and the line numbers in pixels. |
+> | position | `OptionProperty` | `["cursor"]` | Sets the position of the tooltip base on the target position. <br /> **Options:** <br /> `["cursor"]`, `["top"]`, `["bottom"]`, `["left"]`, `["right"]` and combinations of two of them like `["cursor", "top"]`. |
+> | markup | `BooleanProperty` | **`False`** | If True, the text will be rendered using the *`:class:`**`~kivy.core.text.markup.MarkupLabel`***. |
+> | opacity | `NumericProperty` | `1.0` | Opacity of the tooltip. |
+> | padding | `VariableListProperty` | `[3]` | Padding between the background and message. <br /> `[padding_left, padding_top, padding_right, padding_bottom]` |
+<!--
+> | arg | `type` | def | info |
+-->
