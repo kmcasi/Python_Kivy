@@ -3,6 +3,9 @@
 # :memo: TextInput_LN documentation
 Custom TextInput class with line numbers, scroll bars and more other futures fully customizable.
 
+:no_entry_sign::bangbang: This class is deprecated and will be removed in the future :no_entry_sign::bangbang:
+Use [LineNumber](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/DOC_LineNumber.md) instead.
+
 <br />
 
 <!-- []=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[ PREV ]=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=[] -->
