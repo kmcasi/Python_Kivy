@@ -1,5 +1,5 @@
-
-# Info's
+<!-- INFO -->
+# :newspaper: Info's
 All of them are made only with python. No KV language was used.
 
 <!-- main.py -->
@@ -7,13 +7,11 @@ All of them are made only with python. No KV language was used.
 > Debugging [TextInpu_LN](#memo-textinput_ln) with live value changes.
 
 <br /><br />
-
-# Content
-<!-- TextInput -->
-> ### :no_entry_sign::bangbang: [:memo: TextInput_LN](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/DOC_TextInput_LN.md) :bangbang::no_entry_sign:
-> Custom TextInput class with line numbers, scroll bars and more other futures fully customizable.
->
-> :bangbang: This class is deprecated and will be removed in the future. Use [LineNumber](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/DOC_LineNumber.md) instead.
+<!-- CONTENT -->
+# :open_file_folder: Content
+<!-- LineNumber -->
+> ### [:bookmark_tabs: LineNumber](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/DOC_LineNumber.md)
+> Custom line number class what will count the lines for the provided TextInput.
 
 <!-- OverlayLayout -->
 > ### [:brown_square: OverlayLayout](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/DOC_OverlayLayout.md)
@@ -23,8 +21,14 @@ All of them are made only with python. No KV language was used.
 > ### [:placard: ToolTip](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/DOC_ToolTip.md)
 > Custom tool tip class what will pop up base on the provided target.
 
-<!-- LineNumber -->
-> ### [:bookmark_tabs: LineNumber](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/DOC_LineNumber.md)
-> Custom line number class what will count the lines for the provided TextInput.
+<br /><br />
+<!-- DEPRECATED -->
+# :no_entry_sign::bangbang: Deprecated
+## All listed classes are deprecated and will be removed in the future.
+
+<!-- TextInput -->
+> ### [:memo: TextInput_LN](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/DOC_TextInput_LN.md)
+> #### :bangbang: Use [LineNumber](https://github.com/kmcasi/Python_Kivy/tree/main/UIX/DOC_LineNumber.md) instead.
+> Custom TextInput class with line numbers, scroll bars and more other futures fully customizable.
 
 <!-- https://github.com/ikatyang/emoji-cheat-sheet/blob/master/README.md -->
